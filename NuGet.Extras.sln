@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet.Extras", "NuGet.Extras\NuGet.Extras.csproj", "{F036B3F1-EA7C-4D69-B9B4-CED15A3475AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet.Extras.Tests", "NuGet.Extras.Tests\NuGet.Extras.Tests.csproj", "{4CDE1B34-3CB5-46BE-B259-421FBD380C42}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3478902-1A35-4CC8-A0F2-0CD3F92B287F}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F036B3F1-EA7C-4D69-B9B4-CED15A3475AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F036B3F1-EA7C-4D69-B9B4-CED15A3475AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F036B3F1-EA7C-4D69-B9B4-CED15A3475AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F036B3F1-EA7C-4D69-B9B4-CED15A3475AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CDE1B34-3CB5-46BE-B259-421FBD380C42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CDE1B34-3CB5-46BE-B259-421FBD380C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CDE1B34-3CB5-46BE-B259-421FBD380C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CDE1B34-3CB5-46BE-B259-421FBD380C42}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

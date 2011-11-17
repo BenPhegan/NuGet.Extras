@@ -1,0 +1,6 @@
+
+*.suo
+/NuGet.CommandLine.Extensions.Core/bin
+/NuGet.CommandLine.Extensions.Core/obj
+/NuGet.CommandLine.Extensions.Core.Tests/bin
+/NuGet.CommandLine.Extensions.Core.Tests/obj
