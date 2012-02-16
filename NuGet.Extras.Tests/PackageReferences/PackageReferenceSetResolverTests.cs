@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using NuGet.Extras.PackageReferences;
 using NuGet.Extras.Tests.TestData;
+using System.IO;
 
 namespace NuGet.Extras.Tests.PackageReferences
 {
@@ -123,7 +124,7 @@ namespace NuGet.Extras.Tests.PackageReferences
 
         private PackageResolverTestObject GetTestObjectFromDataFile(string sample)
         {
-            XDocument xDoc = XDocument.Load(".\\TestData\\PackageReferenceSetResolverTestData.xml");
+            XDocument xDoc = XDocument.Load(Path.Combine(".","TestData","PackageReferenceSetResolverTestData.xml"));
             var testData = xDoc.Elements("Tests").Elements("Test").Where(x => x.Attribute("name").Value == sample).First();
             if (testData != null)
             {
