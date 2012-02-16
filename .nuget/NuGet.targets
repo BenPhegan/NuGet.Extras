@@ -42,11 +42,11 @@
     <Target Name="RestorePackages" DependsOnTargets="CheckPrerequisites">
         <Exec Command="$(RestoreCommand)"
               LogStandardErrorAsError="true"
-              Condition="Exists('$(PackagesConfig)')" />
+              Condition="Exists('$(PackagesConfig)') AND '$(OS)' == 'Windows_NT' " />
     </Target>
 
     <Target Name="BuildPackage" DependsOnTargets="CheckPrerequisites">
         <Exec Command="$(BuildCommand)"
-              LogStandardErrorAsError="true" />
+              LogStandardErrorAsError="true" Condition=" '$(OS)' == 'Windows_NT' " />
     </Target>
 </Project>
