@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NuGet.Extras.Comparers;
 
 namespace NuGet.Extras.Packages
 {
@@ -15,6 +16,6 @@ namespace NuGet.Extras.Packages
         /// <param name="logCount">The log count.</param>
         /// <param name="excludeVersion">if set to <c>true</c> [exclude version].</param>
         /// <returns></returns>
-        IEnumerable<PackageReference> GetPackageReferences(IEnumerable<PackageReferenceFile> packageReferenceFiles, Action<string, string> logCount, bool latest = false);
+        IEnumerable<PackageReference> GetPackageReferences(IEnumerable<PackageReferenceFile> packageReferenceFiles, Action<string, string> logCount, PackageReferenceEqualityComparer comparer);
     }
 }

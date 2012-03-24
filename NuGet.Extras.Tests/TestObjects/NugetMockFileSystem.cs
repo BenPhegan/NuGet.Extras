@@ -11,7 +11,8 @@ namespace NuGet.Extras.Tests.TestObjects
     {
         public void AddFile(string path, System.IO.Stream stream)
         {
-            throw new NotImplementedException();
+            var file = MockFileSystemInfo.CreateFileObject(path, stream);
+            this.AddMockFile(file);
         }
 
         public DateTimeOffset GetCreated(string path)
@@ -53,7 +54,7 @@ namespace NuGet.Extras.Tests.TestObjects
 
         public virtual Stream OpenFile(string path)
         {
-            return base.OpenFile(path,FileMode.Open, FileAccess.Read,FileShare.ReadWrite);
+            return base.OpenFile(path,FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
 
         public string Root

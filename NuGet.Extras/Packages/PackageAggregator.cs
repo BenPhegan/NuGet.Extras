@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml.Linq;
 using NuGet.Extras.Repositories;
 using NuGet.Extras.PackageReferences;
+using NuGet.Extras.Comparers;
 
 namespace NuGet.Extras.Packages
 {
@@ -76,9 +77,9 @@ namespace NuGet.Extras.Packages
         /// </summary>
         /// <param name="logCount">The log count.</param>
         /// <param name="excludeVersion">if set to <c>true</c> [exclude version].</param>
-        public void Compute(Action<string, string> logCount, bool Latest = false)
+        public void Compute(Action<string, string> logCount, PackageReferenceEqualityComparer comparer)
         {
-            _packages = _packageEnumerator.GetPackageReferences(_repositoryManager.PackageReferenceFiles, logCount, Latest);
+            _packages = _packageEnumerator.GetPackageReferences(_repositoryManager.PackageReferenceFiles, logCount, comparer);
 
             //TODO not sure this is correct...
             var resolver = new PackageReferenceSetResolver();

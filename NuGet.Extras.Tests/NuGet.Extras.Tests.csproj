@@ -66,6 +66,7 @@
     <Compile Include="Comparers\VersionSpecEqualityComparers.cs" />
     <Compile Include="PackageReferences\PackageReferenceSetResolverTests.cs" />
     <Compile Include="Packages\PackageAggregatorTests.cs" />
+    <Compile Include="Packages\PackageEnumeratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\RepositoryGroupManagerTests.cs" />
     <Compile Include="Repositories\RepositoryManagerTests.cs" />

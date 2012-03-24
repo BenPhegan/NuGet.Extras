@@ -9,9 +9,11 @@ using NuGet;
 using System.Collections.Generic;
 using NuGet.Extras.Tests.TestObjects;
 using ReplacementFileSystem;
+using NuGet.Extras.Comparers;
 
 namespace NuGet.Extras.Tests.Packages
 {
+    [TestFixture]
     public class PackageAggregatorTests
     {
         private IRepositoryManager _repositoryManager;
@@ -41,7 +43,7 @@ namespace NuGet.Extras.Tests.Packages
         [TestCase(true, 2, 0, Description = "Using version stated")] // Expected value was originally '3'. test is now invalid because of version resolution
         public void AggregateCount(bool getLatest, int expectedCanResolveCount, int expectedCannotResolveCount)
         {
-            _packageAggregator.Compute((s, s1) => Console.WriteLine(@"{0}{1}", s, s1), getLatest);
+            _packageAggregator.Compute((s, s1) => Console.WriteLine(@"{0}{1}", s, s1), PackageReferenceEqualityComparer.Id);
             Assert.AreEqual(expectedCanResolveCount, _packageAggregator.Packages.Count());
             Assert.AreEqual(expectedCannotResolveCount, _packageAggregator.PackageResolveFailures.Count());
         }

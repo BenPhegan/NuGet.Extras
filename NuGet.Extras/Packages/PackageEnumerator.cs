@@ -18,7 +18,7 @@ namespace NuGet.Extras.Packages
         /// <param name="logCount">The log count.</param>
         /// <param name="excludeVersion">if set to <c>true</c> [exclude version].</param>
         /// <returns></returns>
-        public IEnumerable<PackageReference> GetPackageReferences(IEnumerable<PackageReferenceFile> packageReferenceFiles, Action<string, string> logCount, bool latest = false)
+        public IEnumerable<PackageReference> GetPackageReferences(IEnumerable<PackageReferenceFile> packageReferenceFiles, Action<string, string> logCount, PackageReferenceEqualityComparer comparer = null)
         {
             //Get the full list of all packages, minus version numbers
             var packages = new List<PackageReference>();
@@ -28,9 +28,9 @@ namespace NuGet.Extras.Packages
 
             int total = packages.Count;
 
-            //Use the distinct list
-            //HACK Do we need excludeVersions at all anymore?
-            var comparer = latest ? PackageReferenceEqualityComparer.Id : PackageReferenceEqualityComparer.IdAndVersion;
+            //Use the distinct list based on the comparer
+			if (comparer == null)
+				comparer = PackageReferenceEqualityComparer.IdVersionAndAllowedVersions;
             packages = packages.Distinct(comparer).ToList();
             logCount(packages.Count.ToString(), total.ToString());
 

@@ -13,11 +13,8 @@ namespace NuGet.Extras.ExtensionMethods
             {
                 throw new ArgumentNullException("packageId");
             }
-
-            return (from p in repository.GetPackages()
-                    where p.IsLatestVersion && p.Id.ToLower() == packageId.ToLower()
-                    orderby p.Id, p.Version descending
-                    select p).FirstOrDefault();
+			
+			return repository.GetPackages().Where((p) => p.IsLatestVersion && p.Id.Equals(packageId,StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
     }
 }

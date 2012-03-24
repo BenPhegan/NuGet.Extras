@@ -34,7 +34,6 @@ namespace NuGet.Extras.Tests.Repositories
             else
             {
                 mfs.CreateDirectory(repositoryConfigPath);
-                var test = mfs.DirectoryExists(repositoryConfigPath);
             }
 
 
