@@ -4,8 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace NuGet.Extras.Comparers
 {
+    /// <summary>
+    /// Provides a set of Comparers to enable Packages comparisons to be evaluated in specific ways.
+    /// </summary>
     public class PackageReferenceEqualityComparer : IEqualityComparer<PackageReference>
     {
+        /// <summary>
+        /// Check Package equality using the PackageID, Version and VersionsConstraints
+        /// </summary>
         public static readonly PackageReferenceEqualityComparer IdVersionAndAllowedVersions = new PackageReferenceEqualityComparer((x, y) =>
         {
             var _vsec = new VersionSpecEqualityComparer(x.VersionConstraint);
@@ -31,6 +37,9 @@ namespace NuGet.Extras.Comparers
                 return first;
             });
 
+        /// <summary>
+        /// Check Package equality using the PackageID and Version only.
+        /// </summary>
         public static readonly PackageReferenceEqualityComparer IdAndVersion = new PackageReferenceEqualityComparer((x, y) =>
         {
             if (x.Version == null ^ y.Version == null)
@@ -50,6 +59,10 @@ namespace NuGet.Extras.Comparers
                     return x.Version == null ? x.Id.GetHashCode() : x.Id.GetHashCode() ^ x.Version.GetHashCode();
                 });
 
+
+        /// <summary>
+        /// Check Package equality using the PackageID only.
+        /// </summary>
         public static readonly PackageReferenceEqualityComparer Id = new PackageReferenceEqualityComparer((x, y) => x.Id.Equals(y.Id, StringComparison.OrdinalIgnoreCase),
                                                                                         x => x.Id.GetHashCode());
 

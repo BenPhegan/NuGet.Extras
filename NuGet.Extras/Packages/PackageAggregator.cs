@@ -77,12 +77,11 @@ namespace NuGet.Extras.Packages
         /// </summary>
         /// <param name="logCount">The log count.</param>
         /// <param name="excludeVersion">if set to <c>true</c> [exclude version].</param>
-        public void Compute(Action<string, string> logCount, PackageReferenceEqualityComparer comparer)
+        public void Compute(Action<string, string> logCount, PackageReferenceEqualityComparer comparer, IPackageReferenceSetResolver resolver)
         {
             _packages = _packageEnumerator.GetPackageReferences(_repositoryManager.PackageReferenceFiles, logCount, comparer);
 
             //TODO not sure this is correct...
-            var resolver = new PackageReferenceSetResolver();
             var returnLists = resolver.Resolve(_packages);
             _packages = returnLists.Item1;
             _packagesResolveFailures = returnLists.Item2;

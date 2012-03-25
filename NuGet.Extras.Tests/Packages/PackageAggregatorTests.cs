@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using NuGet.Extras.Tests.TestObjects;
 using ReplacementFileSystem;
 using NuGet.Extras.Comparers;
+using NuGet.Extras.PackageReferences;
 
 namespace NuGet.Extras.Tests.Packages
 {
@@ -39,11 +40,11 @@ namespace NuGet.Extras.Tests.Packages
             Assert.IsNotNull(_packageAggregator.Packages);
         }
 
-        [TestCase(false, 1, 2, Description="Getting latest")] // Expected value was originally '3'. test is now invalid because of version resolution
-        [TestCase(true, 2, 0, Description = "Using version stated")] // Expected value was originally '3'. test is now invalid because of version resolution
-        public void AggregateCount(bool getLatest, int expectedCanResolveCount, int expectedCannotResolveCount)
+        //TODO Not much to test here really....
+        [TestCase(2, 0, Description = "Using version stated")]
+        public void AggregateCount(int expectedCanResolveCount, int expectedCannotResolveCount)
         {
-            _packageAggregator.Compute((s, s1) => Console.WriteLine(@"{0}{1}", s, s1), PackageReferenceEqualityComparer.Id);
+            _packageAggregator.Compute((s, s1) => Console.WriteLine(@"{0}{1}", s, s1), PackageReferenceEqualityComparer.Id, new PackageReferenceSetResolver());
             Assert.AreEqual(expectedCanResolveCount, _packageAggregator.Packages.Count());
             Assert.AreEqual(expectedCannotResolveCount, _packageAggregator.PackageResolveFailures.Count());
         }

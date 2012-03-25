@@ -21,27 +21,23 @@ namespace NuGet.Extras.Tests.Repositories
                                               <repository path='..\Project3\packages.config' />
                                             </repositories>";
 
-        [TestCase(@"c:\files\TestSolution\packages\repositories.config", true, 0, 1)]
-        [TestCase(@"c:\files\TestSolution\packages\", false, 1, 1)]
-        [TestCase(@"c:\files\TestSolution\", false, 2, 2)]
-        public void ConstructParser(string repositoryConfigPath, Boolean file, int additionalFileCount, int repositoryCount)
+        MockFileSystem mfs; 
+
+        [TestFixtureSetUp]
+        public void Setup()
         {
-            var mfs = new MockFileSystem();
-            if (file)
-            {
-                mfs.Info.Add(MockFileSystemInfo.CreateFileObject(repositoryConfigPath, baseRepositoriesConfig));
-            }
-            else
-            {
-                mfs.CreateDirectory(repositoryConfigPath);
-            }
+            mfs = new MockFileSystem();
+            mfs.AddMockFile(new MockFileSystemInfo(ItemType.File,@"c:\files\TestSolution\packages\repositories.config",DateTime.Now,baseRepositoriesConfig),createDirectoryTree: true);
+            mfs.AddMockFile(new MockFileSystemInfo(ItemType.File,@"c:\files\TestSolution\repositories.config",DateTime.Now, baseRepositoriesConfig), createDirectoryTree: false);
+            mfs.AddMockDirectoryStructure(@"c:\random\empty");
+        }
 
-
-            for (int x = 0; x < additionalFileCount; x++)
-            {
-                mfs.Info.Add(MockFileSystemInfo.CreateFileObject(String.Concat(repositoryConfigPath, x, Path.DirectorySeparatorChar, "repositories.config"), baseRepositoriesConfig));
-            }
-
+        [TestCase(@"c:\files\TestSolution\packages\repositories.config", 1)]
+        [TestCase(@"c:\files\TestSolution\packages", 1)]
+        [TestCase(@"c:\files\TestSolution", 2)]
+        [TestCase(@"c:\random", 0)]
+        public void ConstructParser(string repositoryConfigPath,int repositoryCount)
+        {
             var repositoryManager = new RepositoryGroupManager(repositoryConfigPath, mfs);
             Assert.IsNotNull(repositoryManager);
             Assert.AreEqual(repositoryCount, repositoryManager.RepositoryManagers.Count());

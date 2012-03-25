@@ -28,7 +28,7 @@ namespace NuGet.Extras.Repositories
         {
             Contract.Requires(fileSystem != null);
             this.fileSystem = fileSystem;
-
+            
             if (fileSystem.DirectoryExists(repository))
             {
                 // we're dealing with a directory

@@ -101,6 +101,7 @@ namespace NuGet.Extras.Tests.PackageReferences
         [TestCase("5")]
         [TestCase("6")]
         [TestCase("7")]
+        [TestCase("8")]
         public void CanResolvePackageList(string testname)
         {
             var testData = GetTestObjectFromDataFile(testname);

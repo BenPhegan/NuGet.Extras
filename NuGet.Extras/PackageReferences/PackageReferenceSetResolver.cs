@@ -7,7 +7,7 @@ using System.Diagnostics.Contracts;
 
 namespace NuGet.Extras.PackageReferences
 {
-    public class PackageReferenceSetResolver
+    public class PackageReferenceSetResolver : IPackageReferenceSetResolver
     {
         /// <summary>
         /// Resolves the set of correct PackageReferences based on the smallest set of VersionSpec per Package Id that satisfies all
