@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ReplacementFileSystem;
 using System.IO;
+using NuGet;
 
 namespace NuGet.Extras.Tests.TestObjects
 {
