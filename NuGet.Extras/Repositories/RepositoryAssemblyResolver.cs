@@ -16,17 +16,17 @@ namespace NuGet.Extras.Repositories
         {
             this.assemblies = assemblies;
             this.packageSource = packageSource;
+
+            foreach (var a in assemblies)
+            {
+                resolvedAssemblies.Add(a, new List<IPackage>());
+            }
         }
 
         public Dictionary<string, List<IPackage>> ResolveAssemblies(Boolean exhaustive)
         {
             int current = 0;
             int max = packageSource.Count();
-
-            foreach (var a in assemblies)
-            {
-                resolvedAssemblies.Add(a, new List<IPackage>());
-            }
 
             foreach (var p in packageSource)
             {

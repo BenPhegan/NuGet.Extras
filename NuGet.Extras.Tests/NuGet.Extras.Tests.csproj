@@ -72,7 +72,6 @@
     <Compile Include="Repositories\RepositoryManagerTests.cs" />
     <Compile Include="TestData\PackageResolverTestObject.cs" />
     <Compile Include="TestObjects\NugetMockFileSystem.cs" />
-    <Compile Include="TestObjects\FileSystemExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\PackageReferenceSetResolverTestData.xml">

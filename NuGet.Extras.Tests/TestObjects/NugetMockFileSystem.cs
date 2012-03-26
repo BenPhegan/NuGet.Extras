@@ -23,17 +23,12 @@ namespace NuGet.Extras.Tests.TestObjects
 
         public new IEnumerable<string> GetDirectories(string path)
         {
-            throw new NotImplementedException();
-        }
-
-        public new IEnumerable<string> GetFiles(string path, string filter)
-        {
-            throw new NotImplementedException();
+            return base.GetDirectories(path);
         }
 
         IEnumerable<string> IFileSystem.GetFiles(string path)
         {
-            throw new NotImplementedException();
+            return base.GetFiles(path).AsEnumerable();
         }
 
         public DateTimeOffset GetLastModified(string path)
@@ -61,6 +56,12 @@ namespace NuGet.Extras.Tests.TestObjects
         public string Root
         {
             get { throw new NotImplementedException(); }
+        }
+
+
+        public new IEnumerable<string> GetFiles(string path, string filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

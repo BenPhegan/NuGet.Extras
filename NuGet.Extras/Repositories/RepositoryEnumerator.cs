@@ -5,16 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Diagnostics.Contracts;
-using ReplacementFileSystem;
-using IFileSystem = ReplacementFileSystem.IFileSystem;
 
 namespace NuGet.Extras.Repositories
 {
     public class RepositoryEnumerator : IRepositoryEnumerator
     {
-        ReplacementFileSystem.IFileSystem fileSystem;
+        IFileSystem fileSystem;
 
-        public RepositoryEnumerator(ReplacementFileSystem.IFileSystem fileSystem)
+        public RepositoryEnumerator(IFileSystem fileSystem)
         {
             Contract.Requires(fileSystem != null);
             this.fileSystem = fileSystem;
@@ -31,7 +29,7 @@ namespace NuGet.Extras.Repositories
             var packageConfigs = new List<PackageReferenceFile>();
 
             //TODO OpenFile probably needs to be a little simpler....
-            XDocument doc = XDocument.Load(fileSystem.OpenFile(repositoryConfig.FullName,FileMode.Open,FileAccess.Read, FileShare.ReadWrite));
+            XDocument doc = XDocument.Load(fileSystem.OpenFile(repositoryConfig.FullName));
             XElement repositories = doc.Element("repositories");
             if (repositories != null)
             {
