@@ -18,7 +18,7 @@ namespace NuGet.Extras.Tests.Repositories
 
         public void ConstructParser()
         {
-            var mfs = new MockFileSystem();
+            var mfs = new NugetMockFileSystem();
             var correctConfig = @"<?xml version='1.0' encoding='utf-8'?>
                                     <repositories>
                                         <repository path='..\Project1\packages.config' />
@@ -47,7 +47,7 @@ namespace NuGet.Extras.Tests.Repositories
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ConstructorException(string repositoryConfigPath, Boolean fileExists)
         {
-            var mfs = new Mock<ReplacementFileSystem.IFileSystem>();
+            var mfs = new Mock<NugetMockFileSystem>();
             mfs.Setup(m => m.FileExists(It.IsAny<string>())).Returns(fileExists);
             new RepositoryManager(repositoryConfigPath, new RepositoryEnumerator(mfs.Object), mfs.Object);
         }
@@ -56,7 +56,7 @@ namespace NuGet.Extras.Tests.Repositories
         [TestCase]
         public void CanCleanPackageFolders()
         {
-            var mfs = new MockFileSystem();
+            var mfs = new NugetMockFileSystem();
 
 
             mfs.AddMockFile(MockFileSystemInfo.CreateFileObject("c:\\packages\\Component\\test.txt"));

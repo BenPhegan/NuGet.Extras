@@ -66,6 +66,7 @@
     <Compile Include="ExtensionMethods\IEnumerableStringExtensions.cs" />
     <Compile Include="Comparers\LambdaComparer.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensions.cs" />
+    <Compile Include="FindFilesPatternToRegex.cs" />
     <Compile Include="PackageReferences\IPackageReferenceSetResolver.cs" />
     <Compile Include="PackageReferences\PackageReferenceSetResolver.cs" />
     <Compile Include="Packages\IPackageEnumerator.cs" />

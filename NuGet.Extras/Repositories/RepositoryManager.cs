@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Diagnostics.Contracts;
 using System.IO;
-using ReplacementFileSystem;
-using IFileSystem = ReplacementFileSystem.IFileSystem;
 
 namespace NuGet.Extras.Repositories
 {
@@ -19,7 +17,7 @@ namespace NuGet.Extras.Repositories
         /// Gets the repository config file details.
         /// </summary>
         public FileInfo RepositoryConfig { get; private set; }
-        ReplacementFileSystem.IFileSystem fileSystem;
+        IFileSystem fileSystem;
 
         /// <summary>
         /// Gets the package reference files.
@@ -34,7 +32,7 @@ namespace NuGet.Extras.Repositories
         /// <example>Can be a direct path to a repository.config file</example>
         ///   
         /// <example>Can be a path to a directory, which will recursively locate all contained repository.config files</example>
-        public RepositoryManager(string repositoryConfig, IRepositoryEnumerator repositoryEnumerator, ReplacementFileSystem.IFileSystem fileSystem)
+        public RepositoryManager(string repositoryConfig, IRepositoryEnumerator repositoryEnumerator, IFileSystem fileSystem)
         {
             Contract.Requires(fileSystem != null);
             this.fileSystem = fileSystem;

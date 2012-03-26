@@ -21,12 +21,12 @@ namespace NuGet.Extras.Tests.Repositories
                                               <repository path='..\Project3\packages.config' />
                                             </repositories>";
 
-        MockFileSystem mfs; 
+        NugetMockFileSystem mfs; 
 
         [TestFixtureSetUp]
         public void Setup()
         {
-            mfs = new MockFileSystem();
+            mfs = new NugetMockFileSystem();
             mfs.AddMockFile(new MockFileSystemInfo(ItemType.File,@"c:\files\TestSolution\packages\repositories.config",DateTime.Now,baseRepositoriesConfig),createDirectoryTree: true);
             mfs.AddMockFile(new MockFileSystemInfo(ItemType.File,@"c:\files\TestSolution\repositories.config",DateTime.Now, baseRepositoriesConfig), createDirectoryTree: false);
             mfs.AddMockDirectoryStructure(@"c:\random\empty");
@@ -48,7 +48,7 @@ namespace NuGet.Extras.Tests.Repositories
         [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
         public void ConstructorException(string repositoryConfigPath)
         {
-            var mfs = new MockFileSystem();
+            var mfs = new NugetMockFileSystem();
             mfs.Info.Add(MockFileSystemInfo.CreateFileObject(repositoryConfigPath));
             new RepositoryGroupManager(repositoryConfigPath, mfs);
         }
