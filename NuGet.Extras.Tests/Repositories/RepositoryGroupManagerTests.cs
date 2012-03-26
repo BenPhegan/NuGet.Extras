@@ -70,22 +70,17 @@ namespace NuGet.Extras.Tests.Repositories
         [TestCase(@"c:\files\TestSolution\packages\repositories.config")]
         public void CanCleanPackageFolders(string repositoryConfig)
         {
-            //[TestFixture(@"..\..\files\TestSolution\packages\repositories.config")]
-            //[TestFixture(@"..\..\files\TestSolution\packages")]
-            //[TestFixture(@"..\..\files\TestSolution")]
+            var repositoryGroupManager = new RepositoryGroupManager(repositoryConfig, mfs);
 
-            var mfs = new MockFileSystem();
-            mfs.AddMockFile(MockFileSystemInfo.CreateFileObject(repositoryConfig, baseRepositoriesConfig));
-
-            foreach (var repositoryManager in _repositoryManager.RepositoryManagers)
+            foreach (var repositoryManager in repositoryGroupManager.RepositoryManagers)
             {
                 if (repositoryManager.RepositoryConfig.Directory != null)
                     repositoryManager.RepositoryConfig.Directory.CreateSubdirectory("Test");
             }
 
-            _repositoryManager.CleanPackageFolders();
+            repositoryGroupManager.CleanPackageFolders();
 
-            foreach (var repositoryManager in _repositoryManager.RepositoryManagers)
+            foreach (var repositoryManager in repositoryGroupManager.RepositoryManagers)
             {
                 if (repositoryManager.RepositoryConfig.Directory != null)
                     Assert.AreEqual(0, repositoryManager.RepositoryConfig.Directory.GetDirectories().Count());
