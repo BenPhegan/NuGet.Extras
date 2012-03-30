@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace NuGet.Extras.ExtensionMethods
 {
-    public static class IFilesSystemExtensions
+    public static class IFileSystemExtensions
     {
         /// <summary>
         /// Gets files for a particular pattern recursively.
@@ -36,5 +36,27 @@ namespace NuGet.Extras.ExtensionMethods
             return files.Distinct();
         }
 
+        public static IEnumerable<string> GetDirectories(string path)
+        {
+            foreach (var index in IndexOfAll(path, Path.DirectorySeparatorChar))
+            {
+                yield return path.Substring(0, index);
+            }
+            yield return path;
+        }
+
+        private static IEnumerable<int> IndexOfAll(string value, char ch)
+        {
+            int index = -1;
+            do
+            {
+                index = value.IndexOf(ch, index + 1);
+                if (index >= 0)
+                {
+                    yield return index;
+                }
+            }
+            while (index >= 0);
+        }
     }
 }

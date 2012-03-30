@@ -48,10 +48,6 @@
     <Reference Include="pnunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="ReplacementFileSystem, Version=0.1.4421.32307, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ReplacementFileSystem.0.4\lib\net40\ReplacementFileSystem.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
@@ -71,7 +67,7 @@
     <Compile Include="Repositories\RepositoryGroupManagerTests.cs" />
     <Compile Include="Repositories\RepositoryManagerTests.cs" />
     <Compile Include="TestData\PackageResolverTestObject.cs" />
-    <Compile Include="TestObjects\NugetMockFileSystem.cs" />
+    <Compile Include="TestObjects\MockFileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\PackageReferenceSetResolverTestData.xml">

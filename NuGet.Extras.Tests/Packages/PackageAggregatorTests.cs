@@ -8,7 +8,6 @@ using Moq;
 using NuGet;
 using System.Collections.Generic;
 using NuGet.Extras.Tests.TestObjects;
-using ReplacementFileSystem;
 using NuGet.Extras.Comparers;
 using NuGet.Extras.PackageReferences;
 
@@ -44,7 +43,7 @@ namespace NuGet.Extras.Tests.Packages
         [TestCase(2, 0, Description = "Using version stated")]
         public void AggregateCount(int expectedCanResolveCount, int expectedCannotResolveCount)
         {
-            _packageAggregator.Compute((s, s1) => Console.WriteLine(@"{0}{1}", s, s1), PackageReferenceEqualityComparer.Id, new PackageReferenceSetResolver());
+            _packageAggregator.Compute((s, s1) => { }, PackageReferenceEqualityComparer.Id, new PackageReferenceSetResolver());
             Assert.AreEqual(expectedCanResolveCount, _packageAggregator.Packages.Count());
             Assert.AreEqual(expectedCannotResolveCount, _packageAggregator.PackageResolveFailures.Count());
         }
@@ -82,7 +81,7 @@ namespace NuGet.Extras.Tests.Packages
                       <package id='Package2' version='2.0' />
                     </packages>";
 
-            var mfs = new Mock<NugetMockFileSystem>();
+            var mfs = new Mock<MockFileSystem>();
             mfs.Setup(m => m.OpenFile("x1")).Returns(x1.AsStream());
             mfs.Setup(m => m.OpenFile("x2")).Returns(x2.AsStream());
             mfs.Setup(m => m.FileExists(It.IsAny<string>())).Returns(true);

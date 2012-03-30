@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using NuGet.Extras.Packages;
-using ReplacementFileSystem;
 using NuGet.Extras.Tests.TestObjects;
 using NuGet.Extras.Comparers;
 using System.IO;
@@ -19,7 +18,7 @@ namespace NuGet.Extras.Tests.Packages
         public void TestStream()
         {
             Stream stream1 = "test".AsStream();
-            IFileSystem fs = new NugetMockFileSystem();
+            IFileSystem fs = new MockFileSystem();
             fs.AddFile(@"c:\test.config",stream1);
             //Stream stream2 = fs.OpenFile();
 
@@ -28,7 +27,7 @@ namespace NuGet.Extras.Tests.Packages
         [Test]
         public void CanEnumerateOverSet()
         {
-            IFileSystem fs = new NugetMockFileSystem();
+            IFileSystem fs = new MockFileSystem();
             var test1 = @"c:\test1\packages.config";
             var test2 = @"c:\test1\packages.config";
 
@@ -54,10 +53,10 @@ namespace NuGet.Extras.Tests.Packages
 
 
             PackageEnumerator enumerator = new PackageEnumerator();
-            var idOnly = enumerator.GetPackageReferences(list, (a, b) => Console.WriteLine(a + " - " + b), PackageReferenceEqualityComparer.Id);
+            var idOnly = enumerator.GetPackageReferences(list, (a, b) => { }, PackageReferenceEqualityComparer.Id);
             Assert.AreEqual(1, idOnly.Count());
 
-            var idAndVersion = enumerator.GetPackageReferences(list, (a, b) => Console.WriteLine(a + " - " + b), PackageReferenceEqualityComparer.IdAndVersion);
+            var idAndVersion = enumerator.GetPackageReferences(list, (a, b) => { }, PackageReferenceEqualityComparer.IdAndVersion);
             Assert.AreEqual(3, idAndVersion.Count());
 
 

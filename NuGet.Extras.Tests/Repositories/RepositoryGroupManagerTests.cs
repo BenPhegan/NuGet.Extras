@@ -4,16 +4,12 @@ using NUnit.Framework;
 using NuGet.Extras.Repositories;
 using NuGet.Extras.Tests.TestObjects;
 using System.IO;
-using ReplacementFileSystem;
-using IFileSystem = ReplacementFileSystem.IFileSystem;
-using ItemType = ReplacementFileSystem.ItemType;
 
 namespace NuGet.Extras.Tests.Repositories
 {
     [TestFixture]
     public class RepositoryGroupManagerTests
     {
-        #region Global Constructor Tests
         string baseRepositoriesConfig = @"<?xml version='1.0' encoding='utf-8'?>
                                             <repositories>
                                               <repository path='..\Project1\packages.config' />
@@ -21,15 +17,18 @@ namespace NuGet.Extras.Tests.Repositories
                                               <repository path='..\Project3\packages.config' />
                                             </repositories>";
 
-        NugetMockFileSystem mfs; 
+        MockFileSystem mfs; 
 
         [TestFixtureSetUp]
         public void Setup()
         {
-            mfs = new NugetMockFileSystem();
-            mfs.AddMockFile(new MockFileSystemInfo(ItemType.File,@"c:\files\TestSolution\packages\repositories.config",DateTime.Now,baseRepositoriesConfig),createDirectoryTree: true);
-            mfs.AddMockFile(new MockFileSystemInfo(ItemType.File,@"c:\files\TestSolution\repositories.config",DateTime.Now, baseRepositoriesConfig), createDirectoryTree: false);
-            mfs.AddMockDirectoryStructure(@"c:\random\empty");
+            mfs = new MockFileSystem();
+            mfs.CreateDirectory(@"c:\files");
+            mfs.CreateDirectory(@"c:\files\TestSolution");
+            mfs.CreateDirectory(@"c:\files\TestSolution\packages");
+            mfs.AddFile(@"c:\files\TestSolution\packages\repositories.config", baseRepositoriesConfig);
+            mfs.AddFile(@"c:\files\TestSolution\repositories.config", baseRepositoriesConfig);
+            mfs.CreateDirectory(@"c:\random\empty");
         }
 
         [TestCase(@"c:\files\TestSolution\packages\repositories.config", 1)]
@@ -48,24 +47,10 @@ namespace NuGet.Extras.Tests.Repositories
         [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
         public void ConstructorException(string repositoryConfigPath)
         {
-            var mfs = new NugetMockFileSystem();
-            mfs.Info.Add(MockFileSystemInfo.CreateFileObject(repositoryConfigPath));
+            var mfs = new MockFileSystem();
+            mfs.AddFile(repositoryConfigPath);
             new RepositoryGroupManager(repositoryConfigPath, mfs);
         }
-
-        #endregion
-
-        private readonly string _repositoryConfigPath;
-        private RepositoryGroupManager _repositoryManager;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RepositoryManagerTests"/> class.
-        /// </summary>
-        /// <param name="repositoryConfigPath">The repository config path.</param>
-        //public RepositoryGroupManagerTests(string repositoryConfigPath)
-        //{
-        //    _repositoryConfigPath = repositoryConfigPath;
-        //}
 
         [TestCase(@"c:\files\TestSolution\packages\repositories.config")]
         public void CanCleanPackageFolders(string repositoryConfig)
@@ -75,7 +60,9 @@ namespace NuGet.Extras.Tests.Repositories
             foreach (var repositoryManager in repositoryGroupManager.RepositoryManagers)
             {
                 if (repositoryManager.RepositoryConfig.Directory != null)
-                    repositoryManager.RepositoryConfig.Directory.CreateSubdirectory("Test");
+                {
+                    mfs.CreateDirectory(Path.Combine(repositoryManager.RepositoryConfig.Directory.Name, "Test"));
+                }
             }
 
             repositoryGroupManager.CleanPackageFolders();
@@ -83,7 +70,7 @@ namespace NuGet.Extras.Tests.Repositories
             foreach (var repositoryManager in repositoryGroupManager.RepositoryManagers)
             {
                 if (repositoryManager.RepositoryConfig.Directory != null)
-                    Assert.AreEqual(0, repositoryManager.RepositoryConfig.Directory.GetDirectories().Count());
+                    Assert.AreEqual(0, mfs.GetDirectories(repositoryManager.RepositoryConfig.Directory.Name).Count());
             }
         }
     }
