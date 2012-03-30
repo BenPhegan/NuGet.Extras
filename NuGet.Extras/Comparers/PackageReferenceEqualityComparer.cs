@@ -14,7 +14,7 @@ namespace NuGet.Extras.Comparers
         /// </summary>
         public static readonly PackageReferenceEqualityComparer IdVersionAndAllowedVersions = new PackageReferenceEqualityComparer((x, y) =>
         {
-            var _vsec = new VersionSpecEqualityComparer(x.VersionConstraint);
+            var versionSpecEqualityComparer = new VersionSpecEqualityComparer(x.VersionConstraint);
             if (x.VersionConstraint == null ^ y.VersionConstraint == null)
             {
                 return false;
@@ -26,14 +26,14 @@ namespace NuGet.Extras.Comparers
             }
 
             //return x.Id.Equals(y.Id, StringComparison.OrdinalIgnoreCase) && x.Version.Equals(y.Version) && x.VersionConstraint.Equals(y.VersionConstraint);
-            return x.Id.Equals(y.Id, StringComparison.OrdinalIgnoreCase) && x.Version.Equals(y.Version) && _vsec.Equals(y.VersionConstraint);
+            return x.Id.Equals(y.Id, StringComparison.OrdinalIgnoreCase) && x.Version.Equals(y.Version) && versionSpecEqualityComparer.Equals(y.VersionConstraint);
 
         },
             x =>
             {
-                var _vsec = new VersionSpecEqualityComparer(x.VersionConstraint);
+                var versionSpecEqualityComparer = new VersionSpecEqualityComparer(x.VersionConstraint);
                 var first = x.Id.GetHashCode() ^ x.Version.GetHashCode();
-                first = x.VersionConstraint != null ? first ^ _vsec.GetHashCode() : first;
+                first = x.VersionConstraint != null ? first ^ versionSpecEqualityComparer.GetHashCode() : first;
                 return first;
             });
 

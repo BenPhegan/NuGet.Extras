@@ -26,9 +26,9 @@ namespace NuGet.Extras.Tests.TestObjects
             return base.GetDirectories(path);
         }
 
-        IEnumerable<string> IFileSystem.GetFiles(string path)
+        IEnumerable<string> IFileSystem.GetFiles(string path, string filter)
         {
-            return base.GetFiles(path).AsEnumerable();
+            return base.GetFiles(path, filter).AsEnumerable();
         }
 
         public DateTimeOffset GetLastModified(string path)

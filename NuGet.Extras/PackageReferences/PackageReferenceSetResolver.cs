@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NuGet;
-using System.Diagnostics.Contracts;
+using NuGet.Extras.ExtensionMethods;
 
 namespace NuGet.Extras.PackageReferences
 {
+    /// <summary>
+    /// Resolves a set of packages to the smallest distinct set that provides all required constrained versions.
+    /// </summary>
     public class PackageReferenceSetResolver : IPackageReferenceSetResolver
     {
         /// <summary>
@@ -103,7 +104,7 @@ namespace NuGet.Extras.PackageReferences
             if (packageReferences.Count() != 0)
             {
                 var failures = new List<PackageReference>();
-                Version winner = null;
+                SemanticVersion winner = null;
                 VersionSpec smallest = ReturnLargestVersionSpec();
                 string id = packageReferences.First().Id;
 
@@ -156,8 +157,8 @@ namespace NuGet.Extras.PackageReferences
         {
             VersionSpec smallest = new VersionSpec()
             {
-                MinVersion = Version.Parse("0.0.0.0"),
-                MaxVersion = Version.Parse("999.999.999.999"),
+                MinVersion = SemanticVersion.Parse("0.0.0.0"),
+                MaxVersion = SemanticVersion.Parse("999.999.999.999"),
                 IsMinInclusive = true,
                 IsMaxInclusive = true
             };

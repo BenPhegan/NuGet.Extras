@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NuGet;
+﻿using System.Collections.Generic;
 
 namespace NuGet.Extras
 {
@@ -33,6 +29,15 @@ namespace NuGet.Extras
         }
 
         public void SetValues(string section, IList<KeyValuePair<string, string>> values)
+        {
+        }
+
+        public IList<KeyValuePair<string, string>> GetNestedValues(string section, string key)
+        {
+            return new List<KeyValuePair<string, string>>();
+        }
+
+        public void SetNestedValues(string section, string key, IList<KeyValuePair<string, string>> values)
         {
         }
     }

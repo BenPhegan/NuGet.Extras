@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 
 namespace NuGet.Extras.ExtensionMethods
 {
@@ -19,7 +15,7 @@ namespace NuGet.Extras.ExtensionMethods
                 if (!allowMultipleVersions)
                 {
                     //Need to crack the package open at this point and check the version, otherwise we just need to download it regardless
-                    ZipPackage zipPackage = new ZipPackage(fileSystem.OpenFile(packagePath));
+                    var zipPackage = new ZipPackage(fileSystem.OpenFile(packagePath));
                     if (zipPackage.Version == package.Version)
                     {
                         return true;

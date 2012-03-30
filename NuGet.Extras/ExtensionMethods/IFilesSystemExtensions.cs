@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NuGet;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace NuGet.Extras.ExtensionMethods
 {
@@ -16,30 +12,26 @@ namespace NuGet.Extras.ExtensionMethods
         /// <param name="fileSystem"></param>
         /// <param name="path"></param>
         /// <param name="filter"></param>
+        /// <param name="option"> </param>
         /// <returns></returns>
         public static IEnumerable<string> GetFiles(this IFileSystem fileSystem, string path, string filter, SearchOption option)
         {
-            //Only build the Regex once...
-            var regex = FindFilesPatternToRegex.Convert(filter);
-
             if (option == SearchOption.TopDirectoryOnly)
             {
-                return fileSystem.GetFiles(path).Where((f) => regex.IsMatch(f));
+                return fileSystem.GetFiles(path, filter);
             }
-            else
-            {
-                return fileSystem.GetFiles(path, regex);
-            }
+            
+            return fileSystem.GetFilesRecursive(path, filter);
         }
 
-        private static IEnumerable<string> GetFiles(this IFileSystem fileSystem, string path, Regex regex)
+        private static IEnumerable<string> GetFilesRecursive(this IFileSystem fileSystem, string path, string filter)
         {
-            List<string> files = new List<string>();
-            files.AddRange(fileSystem.GetFiles(path).Where((f) => regex.IsMatch(f)));
+            var files = new List<string>();
+            files.AddRange(fileSystem.GetFiles(path, filter));
 
             foreach (var subDir in fileSystem.GetDirectories(path))
             {
-                files.AddRange(fileSystem.GetFiles(subDir, regex));
+                files.AddRange(fileSystem.GetFiles(subDir, filter));
             }
             return files.Distinct();
         }

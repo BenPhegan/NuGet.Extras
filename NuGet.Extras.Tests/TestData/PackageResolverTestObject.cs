@@ -41,7 +41,7 @@ namespace NuGet.Extras.Tests.TestData
 
         private PackageReference CreatePackageReferenceFromXElement(XElement input)
         {
-            return new PackageReference(input.Attribute("id").Value, Version.Parse(input.Attribute("version").Value), GetVersionSpec(input));
+            return new PackageReference(input.Attribute("id").Value, SemanticVersion.Parse(input.Attribute("version").Value), GetVersionSpec(input));
         }
 
         private VersionSpec GetVersionSpec(XElement input)

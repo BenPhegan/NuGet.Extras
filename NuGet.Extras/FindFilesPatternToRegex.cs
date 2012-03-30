@@ -11,10 +11,11 @@ namespace NuGet.Extras
     /// </summary>
     internal static class FindFilesPatternToRegex
     {
-        private static Regex HasQuestionMarkRegEx = new Regex(@"\?", RegexOptions.Compiled);
-        private static Regex IlegalCharactersRegex = new Regex("[" + @"\/:<>|" + "\"]", RegexOptions.Compiled);
-        private static Regex CatchExtentionRegex = new Regex(@"^\s*.+\.([^\.]+)\s*$", RegexOptions.Compiled);
-        private static string NonDotCharacters = @"[^.]*";
+        private static readonly Regex HasQuestionMarkRegEx = new Regex(@"\?", RegexOptions.Compiled);
+        private static readonly Regex IlegalCharactersRegex = new Regex("[" + @"\/:<>|" + "\"]", RegexOptions.Compiled);
+        private static readonly Regex CatchExtentionRegex = new Regex(@"^\s*.+\.([^\.]+)\s*$", RegexOptions.Compiled);
+        private const string NonDotCharacters = @"[^.]*";
+
         public static Regex Convert(string pattern)
         {
             if (pattern == null)
@@ -48,7 +49,7 @@ namespace NuGet.Extras
                 regexString += NonDotCharacters;
             }
             regexString += "$";
-            Regex regex = new Regex(regexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var regex = new Regex(regexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             return regex;
         }
     }

@@ -26,8 +26,8 @@ namespace NuGet.Extras.Tests.PackageReferences
         {
             var t = new PackageReferenceSetResolver();
             var l = new List<PackageReference>();
-            l.Add(new PackageReference("test", Version.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v1)));
-            l.Add(new PackageReference("test", Version.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v2)));
+            l.Add(new PackageReference("test", SemanticVersion.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v1)));
+            l.Add(new PackageReference("test", SemanticVersion.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v2)));
             var resolvedVs = t.ResolveValidVersionSpec(l);
             if (expected == null)
             {
@@ -55,9 +55,9 @@ namespace NuGet.Extras.Tests.PackageReferences
         {
             var t = new PackageReferenceSetResolver();
             var l = new List<PackageReference>();
-            l.Add(new PackageReference("test", Version.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v1)));
-            l.Add(new PackageReference("test", Version.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v2)));
-            l.Add(new PackageReference("test", Version.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v3)));
+            l.Add(new PackageReference("test", SemanticVersion.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v1)));
+            l.Add(new PackageReference("test", SemanticVersion.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v2)));
+            l.Add(new PackageReference("test", SemanticVersion.Parse("1.1.1.1"), VersionUtility.ParseVersionSpec(v3)));
             var resolvedVs = t.ResolveValidVersionSpec(l);
             if (expected == null)
             {
@@ -82,13 +82,13 @@ namespace NuGet.Extras.Tests.PackageReferences
         {
             var t = new PackageReferenceSetResolver();
             var l = new List<PackageReference>();
-            l.Add(new PackageReference("test", Version.Parse(v1), new VersionSpec()));
-            l.Add(new PackageReference("test", Version.Parse(v2), new VersionSpec()));
+            l.Add(new PackageReference("test", SemanticVersion.Parse(v1), new VersionSpec()));
+            l.Add(new PackageReference("test", SemanticVersion.Parse(v2), new VersionSpec()));
 
             if (expected == null)
                 Assert.IsNull(t.ResolveValidVersion(l));
             else
-                Assert.AreEqual(Version.Parse(expected), t.ResolveValidVersion(l).Version);
+                Assert.AreEqual(SemanticVersion.Parse(expected), t.ResolveValidVersion(l).Version);
 
         }
 

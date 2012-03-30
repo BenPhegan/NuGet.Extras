@@ -19,8 +19,8 @@ namespace NuGet.Extras.Tests.Comparers
         {
             List<PackageReference> packages = new List<PackageReference>();
 
-            packages.Add(new PackageReference(id1, v1 == null ? null : Version.Parse(v1), vs1 == null ? null : VersionUtility.ParseVersionSpec(vs1)));
-            packages.Add(new PackageReference(id2, v2 == null ? null : Version.Parse(v2), vs2 == null ? null : VersionUtility.ParseVersionSpec(vs2)));
+            packages.Add(new PackageReference(id1, v1 == null ? null : SemanticVersion.Parse(v1), vs1 == null ? null : VersionUtility.ParseVersionSpec(vs1)));
+            packages.Add(new PackageReference(id2, v2 == null ? null : SemanticVersion.Parse(v2), vs2 == null ? null : VersionUtility.ParseVersionSpec(vs2)));
 
             var idResult = packages.Distinct(PackageReferenceEqualityComparer.Id).ToList();
             var idAndVersionResult = packages.Distinct(PackageReferenceEqualityComparer.IdAndVersion).ToList();
@@ -37,8 +37,8 @@ namespace NuGet.Extras.Tests.Comparers
         {
             List<PackageReference> packages = new List<PackageReference>();
 
-            packages.Add(new PackageReference(id1, v1 == null ? null : Version.Parse(v1), vs1));
-            packages.Add(new PackageReference(id2, v2 == null ? null : Version.Parse(v2), vs2));
+            packages.Add(new PackageReference(id1, v1 == null ? null : SemanticVersion.Parse(v1), vs1));
+            packages.Add(new PackageReference(id2, v2 == null ? null : SemanticVersion.Parse(v2), vs2));
 
             packages = packages.Distinct(PackageReferenceEqualityComparer.IdAndVersion).ToList();
 

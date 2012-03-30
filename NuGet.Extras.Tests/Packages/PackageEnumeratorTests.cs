@@ -66,14 +66,14 @@ namespace NuGet.Extras.Tests.Packages
         private static void CreatePackageConfigs(IFileSystem fs, out PackageReferenceFile f1, out PackageReferenceFile f2)
         {
             f1 = (new PackageReferenceFile(fs, @"c:\test1\packages.config"));
-            f1.AddEntry("Test", Version.Parse("1.0.0.0"));
-            f1.AddEntry("Test", Version.Parse("1.1.0.0"));
-            f1.AddEntry("Test", Version.Parse("1.2.0.0"));
+            f1.AddEntry("Test", SemanticVersion.Parse("1.0.0.0"));
+            f1.AddEntry("Test", SemanticVersion.Parse("1.1.0.0"));
+            f1.AddEntry("Test", SemanticVersion.Parse("1.2.0.0"));
 
             f2 = (new PackageReferenceFile(fs, @"c:\test2\packages.config"));
-            f2.AddEntry("Test", Version.Parse("1.0.0.0"));
-            f2.AddEntry("Test", Version.Parse("1.1.0.0"));
-            f2.AddEntry("Test", Version.Parse("1.2.0.0"));
+            f2.AddEntry("Test", SemanticVersion.Parse("1.0.0.0"));
+            f2.AddEntry("Test", SemanticVersion.Parse("1.1.0.0"));
+            f2.AddEntry("Test", SemanticVersion.Parse("1.2.0.0"));
         }
 
     }
