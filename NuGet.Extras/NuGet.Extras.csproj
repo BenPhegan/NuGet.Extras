@@ -38,10 +38,6 @@
     <Reference Include="NuGet">
       <HintPath>..\packages\NuGet.CommandLine.1.5.21005.9019\tools\NuGet.exe</HintPath>
     </Reference>
-    <Reference Include="ReplacementFileSystem, Version=0.1.4421.32307, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ReplacementFileSystem.0.4\lib\net40\ReplacementFileSystem.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
