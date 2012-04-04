@@ -2,8 +2,19 @@
 
 namespace NuGet.Extras.ExtensionMethods
 {
-    static class IPackageExtensions
+    public static class IPackageExtensions
     {
+        /// <summary>
+        /// Determines whether [is package installed] [the specified package id].
+        /// </summary>
+        /// <param name="packageId">The package id.</param>
+        /// <param name="version">The version.</param>
+        /// <param name="allowMultipleVersions">if set to <c>true</c> [allow multiple versions].</param>
+        /// <param name="packageManager">The package manager.</param>
+        /// <param name="fileSystem">The file system.</param>
+        /// <returns>
+        ///   <c>true</c> if [is package installed] [the specified package id]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsPackageInstalled(this IPackage package, bool allowMultipleVersions, PackageManager packageManager, IFileSystem fileSystem)
         {
             var packageDir = packageManager.PathResolver.GetPackageDirectory(package.Id,package.Version);

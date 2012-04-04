@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NuGet.Extras.ExtensionMethods
 {
-    static class IPackageRepositoryExtensions
+    public static class IPackageRepositoryExtensions
     {
         public static IPackage FindLatestPackage(this IPackageRepository repository, string packageId)
         {
