@@ -17,7 +17,7 @@ namespace NuGet.Extras.ExtensionMethods
         /// </returns>
         public static bool IsPackageInstalled(this IPackage package, bool allowMultipleVersions, PackageManager packageManager, IFileSystem fileSystem)
         {
-            var packageDir = packageManager.PathResolver.GetPackageDirectory(package.Id,package.Version);
+            var packageDir = packageManager.PathResolver.GetInstallPath(package);
             var packageFile = packageManager.PathResolver.GetPackageFileName(package.Id, package.Version);
             string packagePath = Path.Combine(packageDir, packageFile);
 

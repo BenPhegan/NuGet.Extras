@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Comparers\PackageReferenceEqualityComparerTests.cs" />
     <Compile Include="Comparers\VersionSpecEqualityComparers.cs" />
+    <Compile Include="Extensions\IPackageExtensionsTests.cs" />
     <Compile Include="PackageReferences\PackageReferenceSetResolverTests.cs" />
     <Compile Include="Packages\PackageAggregatorTests.cs" />
     <Compile Include="Packages\PackageEnumeratorTests.cs" />
@@ -69,6 +70,8 @@
     <Compile Include="Repositories\RepositoryManagerTests.cs" />
     <Compile Include="TestData\PackageResolverTestObject.cs" />
     <Compile Include="TestObjects\MockFileSystem.cs" />
+    <Compile Include="TestObjects\MockPackageRepository.cs" />
+    <Compile Include="TestObjects\PackageUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\PackageReferenceSetResolverTestData.xml">
