@@ -20,7 +20,7 @@ namespace NuGet.Extras.ExtensionMethods
             {
                 throw new ArgumentNullException("packageId");
             }
-            return repository.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Where(p => p.IsLatestVersion).FirstOrDefault();			
+            return repository.GetPackages().Where(p => p != null && p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Where(p => p.IsLatestVersion).FirstOrDefault();			
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace NuGet.Extras.ExtensionMethods
                 throw new ArgumentNullException("packageId");
             }
             //TODO Return the latest package between the versionsConstraint...
-            return repository.GetPackages().Where((p) => versionSpec.Satisfies(p.Version) && p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Max();
+            return repository.GetPackages().Where(p => p != null && p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Where(p => versionSpec.Satisfies(p.Version)).OrderByDescending(p => p.Version).FirstOrDefault();
         }
 
     }
