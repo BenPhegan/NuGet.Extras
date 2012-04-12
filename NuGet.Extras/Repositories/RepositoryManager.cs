@@ -35,7 +35,7 @@ namespace NuGet.Extras.Repositories
             this.fileSystem = fileSystem;
 
             if (fileSystem.FileExists(repositoryConfig) && repositoryConfig.EndsWith("repositories.config"))
-                RepositoryConfig = new FileInfo(repositoryConfig);
+                RepositoryConfig = new FileInfo(fileSystem.GetFullPath(repositoryConfig));
             else
                 throw new ArgumentOutOfRangeException("repository");
 
