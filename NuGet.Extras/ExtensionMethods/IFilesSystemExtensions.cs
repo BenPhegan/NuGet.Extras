@@ -31,7 +31,7 @@ namespace NuGet.Extras.ExtensionMethods
 
             foreach (var subDir in fileSystem.GetDirectories(path))
             {
-                files.AddRange(fileSystem.GetFiles(subDir, filter));
+                files.AddRange(fileSystem.GetFilesRecursive(subDir, filter));
             }
             return files.Distinct();
         }
