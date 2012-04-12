@@ -3,19 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using NuGet.Common;
 
 namespace NuGet.Extras.Repositories
 {
+    /// <summary>
+    /// Provides the ability to search across IQueryable package sources for a set of packages that contain a particular assembly or set of assemblies.
+    /// </summary>
     public class RepositoryAssemblyResolver
     {
         List<string> assemblies = new List<string>();
         IQueryable<IPackage> packageSource;
         Dictionary<string, List<IPackage>> resolvedAssemblies = new Dictionary<string, List<IPackage>>();
+        IConsole Console;
+        IFileSystem fileSystem;
 
-        public RepositoryAssemblyResolver(List<string> assemblies, IQueryable<IPackage> packageSource)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RepositoryAssemblyResolver"/> class.
+        /// </summary>
+        /// <param name="assemblies">The assemblies to look for.</param>
+        /// <param name="packageSource">The package sources to search.</param>
+        /// <param name="fileSystem">The file system to output any packages.config files.</param>
+        /// <param name="console">The console to output to.</param>
+        public RepositoryAssemblyResolver(List<string> assemblies, IQueryable<IPackage> packageSource, IFileSystem fileSystem, IConsole console)
         {
             this.assemblies = assemblies;
             this.packageSource = packageSource;
+            this.Console = console;
+            this.fileSystem = fileSystem;
 
             foreach (var a in assemblies)
             {
@@ -23,28 +38,30 @@ namespace NuGet.Extras.Repositories
             }
         }
 
+        /// <summary>
+        /// Resolves a list of packages that contain the assemblies requested.
+        /// </summary>
+        /// <param name="exhaustive">if set to <c>true</c> [exhaustive].</param>
+        /// <returns></returns>
         public Dictionary<string, List<IPackage>> ResolveAssemblies(Boolean exhaustive)
         {
             int current = 0;
             int max = packageSource.Count();
 
-            foreach (var p in packageSource)
+            foreach (var package in packageSource)
             {
-                Console.Write("\rChecking Package {1} of {2}", p.Id, current++, max);
-                var packageFiles = p.GetFiles();
+                Console.Write("\rChecking Package {1} of {2}", package.Id, current++, max);
+                var packageFiles = package.GetFiles();
                 foreach (var f in packageFiles)
                 {
                     FileInfo file = new FileInfo(f.Path);
-                    foreach (var a in assemblies)
+                    foreach (var assembly in assemblies.Where(a => a.Equals(file.Name, StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        if (file.Name.ToLower() == a.ToLower())
+                        resolvedAssemblies[assembly].Add(package);
+                        //HACK Exhaustive not easy with multiple assemblies, so default to only one currently....
+                        if (!exhaustive && assemblies.Count == 1)
                         {
-                            resolvedAssemblies[a].Add(p);
-                            //HACK Exhaustive not easy with multiple assemblies, so default to only one currently....
-                            if (!exhaustive && assemblies.Count == 1)
-                            {
-                                return resolvedAssemblies;
-                            }
+                            return resolvedAssemblies;
                         }
                     }
                 }
@@ -53,25 +70,30 @@ namespace NuGet.Extras.Repositories
         }
 
 
-        public void OutputPackageConfigFile(Action<string> log)
+        /// <summary>
+        /// Outputs a package.config file reflecting the set of packages that provides the requested set of assemblies.
+        /// </summary>
+        public void OutputPackageConfigFile()
         {
-            File.Delete("packages.config");
-            if (!File.Exists("packages.config"))
+            if (fileSystem.FileExists("packages.config"))
+                fileSystem.DeleteFile("packages.config");
+
+            if (!fileSystem.FileExists("packages.config"))
             {
-                var prf = new PackageReferenceFile(".\\packages.config");
-                foreach (var pl in resolvedAssemblies)
+                var prf = new PackageReferenceFile(fileSystem,".\\packages.config");
+                foreach (var assemblyToPackageMapping in resolvedAssemblies)
                 {
-                    if (pl.Value.Count() > 0)
+                    if (assemblyToPackageMapping.Value.Count() > 0)
                     {
                         IPackage smallestPackage;
-                        if (pl.Value.Count > 1)
+                        if (assemblyToPackageMapping.Value.Count > 1)
                         {
-                            smallestPackage = pl.Value.OrderBy(l => l.GetFiles().Count()).FirstOrDefault();
-                            log(String.Format("{0} : Choosing : {1} - {2} to choose from.", pl.Key, smallestPackage.Id, pl.Value.Count()));
+                            smallestPackage = assemblyToPackageMapping.Value.OrderBy(l => l.GetFiles().Count()).FirstOrDefault();
+                            Console.WriteLine(String.Format("{0} : Choosing : {1} - {2} to choose from.", assemblyToPackageMapping.Key, smallestPackage.Id, assemblyToPackageMapping.Value.Count()));
                         }
                         else
                         {
-                            smallestPackage = pl.Value.First();
+                            smallestPackage = assemblyToPackageMapping.Value.First();
                         }
                         //Only add if we do not have another instance of the ID, not the id/version combo....
                         if (!prf.GetPackageReferences().Any(p => p.Id == smallestPackage.Id))
@@ -81,7 +103,7 @@ namespace NuGet.Extras.Repositories
             }
             else
             {
-                log("Please move the existing packages.config file....");
+                Console.WriteError("Please move the existing packages.config file....");
             }
         }
 
