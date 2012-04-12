@@ -16,11 +16,16 @@ namespace NuGet.Extras.Comparers
         /// <param name="me"></param>
         public VersionSpecEqualityComparer(IVersionSpec me)
         {
-            _me = me;
+            //If we are passed a null value, use a new/default VersionSpec for comparison...
+            _me = me ?? new VersionSpec();
         }
 
         public bool Equals(IVersionSpec other)
         {
+            //If we get passed a null, assume that it is a default/new VersionSpec
+            if (other == null)
+                other = new VersionSpec();
+
             var maxVersionsAreEqual = _me.MaxVersion != null && other.MaxVersion != null
                                  ? _me.MaxVersion.Equals(other.MaxVersion)
                                  : _me.MaxVersion == null && other.MaxVersion == null;
