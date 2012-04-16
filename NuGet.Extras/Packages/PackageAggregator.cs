@@ -72,11 +72,13 @@ namespace NuGet.Extras.Packages
 
         #endregion
 
+
         /// <summary>
-        /// Computes the list of PackageReference objects.
+        /// Computes the list of PackageReference objects, based on the type of IPackageReferenceEqualityComparer passed in.
         /// </summary>
-        /// <param name="logCount">The log count.</param>
-        /// <param name="excludeVersion">if set to <c>true</c> [exclude version].</param>
+        /// <param name="logCount">How to log.</param>
+        /// <param name="comparer">Provides the comparer used to get the distinct list of package references.</param>
+        /// <param name="resolver">A resolver used to resolve the set of possible packages.</param>
         public void Compute(Action<string, string> logCount, PackageReferenceEqualityComparer comparer, IPackageReferenceSetResolver resolver)
         {
             _packages = _packageEnumerator.GetPackageReferences(_repositoryManager.PackageReferenceFiles, logCount, comparer);

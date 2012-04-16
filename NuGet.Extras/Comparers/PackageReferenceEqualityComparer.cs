@@ -59,6 +59,22 @@ namespace NuGet.Extras.Comparers
                     return x.Version == null ? x.Id.GetHashCode() : x.Id.GetHashCode() ^ x.Version.GetHashCode();
                 });
 
+        /// <summary>
+        /// Check Package equality using the PackageID only.
+        /// </summary>
+        public static readonly PackageReferenceEqualityComparer IdAndAllowedVersions = new PackageReferenceEqualityComparer(
+            (x, y) =>
+                {
+                    var versionSpecComparer = new VersionSpecEqualityComparer(x.VersionConstraint);
+                    return x.Id.Equals(y.Id, StringComparison.OrdinalIgnoreCase) && versionSpecComparer.Equals(y.VersionConstraint);
+                }, 
+                x =>
+                    {
+                        var versionSpecEqualityComparer = new VersionSpecEqualityComparer(x.VersionConstraint);
+                        return x.VersionConstraint == null ? x.Id.GetHashCode() : x.Id.GetHashCode() ^ versionSpecEqualityComparer.GetHashCode();
+                    });
+   
+
 
         /// <summary>
         /// Check Package equality using the PackageID only.
