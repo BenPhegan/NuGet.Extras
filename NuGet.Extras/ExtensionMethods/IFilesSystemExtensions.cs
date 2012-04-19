@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -57,6 +58,22 @@ namespace NuGet.Extras.ExtensionMethods
                 }
             }
             while (index >= 0);
+        }
+
+        /// <summary>
+        /// Adds a file via a Func returning a Stream
+        /// </summary>
+        /// <param name="fileSystem"></param>
+        /// <param name="path"></param>
+        /// <param name="write"></param>
+        public static void AddFile(this IFileSystem fileSystem, string path, Action<Stream> write)
+        {
+            using (var stream = new MemoryStream())
+            {
+                write(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                fileSystem.AddFile(path, stream);
+            }
         }
     }
 }

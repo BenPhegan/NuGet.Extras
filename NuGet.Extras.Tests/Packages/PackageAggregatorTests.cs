@@ -28,13 +28,14 @@ namespace NuGet.Extras.Tests.Packages
             repoManagerMock.Setup(r => r.PackageReferenceFiles).Returns(packageFiles);
 
             _repositoryManager = repoManagerMock.Object;
-            _packageAggregator = new PackageAggregator(_repositoryManager, new PackageEnumerator());
         }
 
 
         [TestCase]
         public void ConstructorTest()
         {
+            var fileSystem = new Mock<MockFileSystem>();
+            _packageAggregator = new PackageAggregator(fileSystem.Object, _repositoryManager, new PackageEnumerator());
             Assert.AreSame(_repositoryManager, _packageAggregator.RepositoryManager);
             Assert.IsNotNull(_packageAggregator.Packages);
         }
@@ -43,6 +44,8 @@ namespace NuGet.Extras.Tests.Packages
         [TestCase(2, 0, Description = "Using version stated")]
         public void AggregateCount(int expectedCanResolveCount, int expectedCannotResolveCount)
         {
+            var fileSystem = new Mock<MockFileSystem>();
+            _packageAggregator = new PackageAggregator(fileSystem.Object, _repositoryManager, new PackageEnumerator());
             _packageAggregator.Compute((s, s1) => { }, PackageReferenceEqualityComparer.Id, new PackageReferenceSetResolver());
             Assert.AreEqual(expectedCanResolveCount, _packageAggregator.Packages.Count());
             Assert.AreEqual(expectedCannotResolveCount, _packageAggregator.PackageResolveFailures.Count());
@@ -51,20 +54,20 @@ namespace NuGet.Extras.Tests.Packages
         [Test]
         public void SaveTo()
         {
+            var fileSystem = new Mock<MockFileSystem>(){CallBase = true};
+            _packageAggregator = new PackageAggregator(fileSystem.Object, _repositoryManager, new PackageEnumerator());
             FileInfo file = _packageAggregator.Save(@".");
-            Assert.IsTrue(file.Exists);
-            // tidy up
-            file.Delete();
+            Assert.IsTrue(fileSystem.Object.Paths.ContainsKey(file.ToString()));
         }
 
         [Test]
         public void SaveToTemp()
         {
+            var fileSystem = new Mock<MockFileSystem>() { CallBase = true };
+            _packageAggregator = new PackageAggregator(fileSystem.Object, _repositoryManager, new PackageEnumerator());
+
             FileInfo file = _packageAggregator.Save();
-            Assert.IsTrue(file.Exists);
-            Assert.IsTrue(file.FullName.Contains("packages.config"));
-            // tidy up
-            file.Delete();
+            Assert.IsTrue(fileSystem.Object.Paths.ContainsKey(file.ToString()));
         }
 
         private static List<PackageReferenceFile> GetPackageReferenceFileList()

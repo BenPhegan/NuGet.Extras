@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using NuGet.Extras.Repositories;
 using NuGet.Extras.PackageReferences;
 using NuGet.Extras.Comparers;
+using NuGet.Extras.ExtensionMethods;
 
 namespace NuGet.Extras.Packages
 {
@@ -19,19 +20,23 @@ namespace NuGet.Extras.Packages
         private IEnumerable<PackageReference> _packages;
         private IEnumerable<PackageReference> _packagesResolveFailures;
         private FileInfo _fileInfo;
+        private IFileSystem _fileSystem;
+
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackageAggregator"/> class.
+        /// Creates a new instance of a PackageAggregator
         /// </summary>
-        /// <param name="repositoryManager">The repository manager.</param>
-        /// <param name="packageEnumerator">The package enumerator.</param>
-        /// <param name="autoDelete">if set to <c>true</c> [auto delete].</param>
-        public PackageAggregator(IRepositoryManager repositoryManager, IPackageEnumerator packageEnumerator, bool autoDelete = false)
+        /// <param name="fileSystem"></param>
+        /// <param name="repositoryManager"></param>
+        /// <param name="packageEnumerator"></param>
+        /// <param name="autoDelete"></param>
+        public PackageAggregator(IFileSystem fileSystem, IRepositoryManager repositoryManager, IPackageEnumerator packageEnumerator, bool autoDelete = false)
         {
             _repositoryManager = repositoryManager;
             _packageEnumerator = packageEnumerator;
             _autoDelete = autoDelete;
             _packages = new List<PackageReference>();
+            _fileSystem = fileSystem;
         }
 
         /// <summary>
@@ -96,11 +101,9 @@ namespace NuGet.Extras.Packages
         /// <returns></returns>
         public FileInfo Save(string directory)
         {
-            var directoryInfo = new DirectoryInfo(directory);
-            directoryInfo.Create();
-            XDocument xml = CreatePackagesConfigXml(_packages);
             string fileName = Path.Combine(directory, "packages.config");
-            xml.Save(fileName);
+            XDocument xml = CreatePackagesConfigXml(_packages);
+            _fileSystem.AddFile(fileName, xml.Save);
             _fileInfo = new FileInfo(fileName);
             return _fileInfo;
         }
