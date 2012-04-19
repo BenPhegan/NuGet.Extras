@@ -36,7 +36,7 @@ namespace NuGet.Extras.Repositories
                     if (!string.IsNullOrEmpty(packageconfig))
                     {
                         var fullpath = Path.GetFullPath(repositoryConfig.Directory + "..\\" + packageconfig);
-                        packageConfigs.Add(new PackageReferenceFile(fullpath));
+                        packageConfigs.Add(new PackageReferenceFile(fileSystem, fullpath));
                     }
                 }
             }
