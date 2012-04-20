@@ -39,14 +39,6 @@ namespace NuGet.Extras.Repositories
         }
 
         /// <summary>
-        /// Cleans the package folders.
-        /// </summary>
-        public void CleanPackageFolders()
-        {
-            Parallel.ForEach(RepositoryManagers, (repositoryManager) => repositoryManager.CleanPackageFolders());
-        }
-
-        /// <summary>
         /// Installs the packages.
         /// </summary>
         public void InstallPackages()

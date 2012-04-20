@@ -41,19 +41,5 @@ namespace NuGet.Extras.Repositories
 
             PackageReferenceFiles = repositoryEnumerator.GetPackageReferenceFiles(RepositoryConfig);// GetPackageReferenceFiles();
         }
-
-        /// <summary>
-        /// Cleans the package folders.
-        /// </summary>
-        public void CleanPackageFolders()
-        {
-            var root = RepositoryConfig.DirectoryName;
-            if (root != null)
-            {
-                var directories = new ConcurrentBag<string>(fileSystem.GetDirectories(root).ToList());
-                Console.WriteLine("Deleting {0} package directories from {1} folder", directories.Count, root);
-                Parallel.ForEach(directories, (directory) => fileSystem.DeleteDirectory(directory, true));
-            }
-        }
     }
 }

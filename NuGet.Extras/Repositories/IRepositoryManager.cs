@@ -5,7 +5,6 @@ namespace NuGet.Extras.Repositories
 {
     public interface IRepositoryManager
     {
-        void CleanPackageFolders();
         IEnumerable<PackageReferenceFile> PackageReferenceFiles { get; }
         FileInfo RepositoryConfig { get; }
     }

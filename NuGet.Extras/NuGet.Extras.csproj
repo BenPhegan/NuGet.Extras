@@ -13,7 +13,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <BuildPackage>false</BuildPackage>
+    <BuildPackage>false</BuildPackage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,8 +57,10 @@
     </Compile>
     <Compile Include="BlankUserSettings.cs" />
     <Compile Include="Comparers\PackageReferenceEqualityComparer.cs" />
+    <Compile Include="ExtensionMethods\AggregateRepositoryExtensions.cs" />
     <Compile Include="ExtensionMethods\IFilesSystemExtensions.cs" />
     <Compile Include="ExtensionMethods\IPackageExtensions.cs" />
+    <Compile Include="ExtensionMethods\IPackageManagerExtensions.cs" />
     <Compile Include="ExtensionMethods\IPackageRepositoryExtensions.cs" />
     <Compile Include="ExtensionMethods\IEnumerableStringExtensions.cs" />
     <Compile Include="Comparers\LambdaComparer.cs" />
