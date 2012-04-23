@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Comparers\PackageReferenceEqualityComparerTests.cs" />
     <Compile Include="Comparers\VersionSpecEqualityComparers.cs" />
+    <Compile Include="Extensions\AggregateRepositoryExtensionsTests.cs" />
     <Compile Include="Extensions\IPackageExtensionsTests.cs" />
     <Compile Include="PackageReferences\PackageReferenceSetResolverTests.cs" />
     <Compile Include="Packages\PackageAggregatorTests.cs" />

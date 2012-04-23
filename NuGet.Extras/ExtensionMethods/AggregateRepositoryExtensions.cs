@@ -22,25 +22,22 @@ namespace NuGet.Extras.ExtensionMethods
                 throw new ArgumentNullException("packageId");
             }
 
-            var slimAggregate = GetSlimAggregateRepository(repository);
+            var remoteOnlyAggregateRepository = repository.GetRemoteOnlyAggregateRepository();
     
-            return slimAggregate.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Where(p => p.IsLatestVersion).FirstOrDefault();
+            return remoteOnlyAggregateRepository.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Where(p => p.IsLatestVersion).FirstOrDefault();
         }
 
-        private static AggregateRepository GetSlimAggregateRepository(AggregateRepository repository)
+        /// <summary>
+        /// Returns a an AggregateRepository minus any LocalPackageRepositories or MachineCache repositories.  Useful if you want to use a command that will not work across these types.
+        /// Snappy name, I know.
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <returns></returns>
+        public static AggregateRepository GetRemoteOnlyAggregateRepository(this AggregateRepository repository)
         {
             //Craziness as the MachineCache and LocalPackageRepository do not support IsLatestVersion
-            List<IPackageRepository> repositoryList = new List<IPackageRepository>();
-            foreach (var packageRepository in repository.Repositories)
-            {
-                var repoType = packageRepository.GetType();
-                if (repoType != typeof (LocalPackageRepository) && repoType != typeof (MachineCache))
-                {
-                    repositoryList.Add(packageRepository);
-                }
-            }
-            var slimAggregate = new AggregateRepository(repositoryList);
-            return slimAggregate;
+            var excluded = new List<Type> {typeof (LocalPackageRepository), typeof (MachineCache)};
+            return new AggregateRepository(repository.Repositories.Where(r => !excluded.Contains(r.GetType())));
         }
 
         /// <summary>
@@ -58,9 +55,9 @@ namespace NuGet.Extras.ExtensionMethods
                 throw new ArgumentNullException("packageId");
             }
             //TODO Return the latest package between the versionsConstraint...
-            var slimAggregate = GetSlimAggregateRepository(repository);
+            var remoteOnlyAggregateRepository = repository.GetRemoteOnlyAggregateRepository();
 
-            return slimAggregate.FindPackagesById(packageId).Where(p => versionSpec.Satisfies(p.Version)).OrderByDescending(p => p.Version).FirstOrDefault();
+            return remoteOnlyAggregateRepository.FindPackagesById(packageId).Where(p => versionSpec.Satisfies(p.Version)).OrderByDescending(p => p.Version).FirstOrDefault();
         }
     }
 }
