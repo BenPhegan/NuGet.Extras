@@ -27,6 +27,25 @@ namespace NuGet.Extras.ExtensionMethods
             }
         }
 
+        /// <summary>
+        /// Checks whether an IPackage exists within a PackageManager.  By default, will use the UseSideBySide settings of the DefaultPackagePathProvider the PackageManager is instantiated with.
+        /// If passed in TRUE for exhaustive, will check both with and without UseSideBySide set.
+        /// </summary>
+        /// <param name="packageManager"></param>
+        /// <param name="packageId"> </param>
+        /// <param name="version"> </param>
+        /// <param name="exhaustive"></param>
+        /// <returns></returns>
+        public static bool IsPackageInstalled(this PackageManager packageManager, string packageId, SemanticVersion version, bool exhaustive = false)
+        {
+            IPackage package = new DataServicePackage
+                        {
+                            Version = version.ToString(),
+                            Id = packageId
+                        };
+
+            return packageManager.IsPackageInstalled(package, exhaustive);
+        }
 
         /// <summary>
         /// Checks whether an IPackage exists within a PackageManager.  By default, will use the UseSideBySide settings of the DefaultPackagePathProvider the PackageManager is instantiated with.
@@ -36,7 +55,7 @@ namespace NuGet.Extras.ExtensionMethods
         /// <param name="package"></param>
         /// <param name="exhaustive"></param>
         /// <returns></returns>
-        public static bool IsPackageInstalled(this PackageManager packageManager, IPackage package, bool exhaustive = false)
+        public static bool IsPackageInstalled(this PackageManager packageManager,  IPackage package, bool exhaustive = false)
         {
 
             var pathsDictionary = new Dictionary<string, bool>();
