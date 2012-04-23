@@ -59,7 +59,6 @@
     <Compile Include="Comparers\PackageReferenceEqualityComparer.cs" />
     <Compile Include="ExtensionMethods\AggregateRepositoryExtensions.cs" />
     <Compile Include="ExtensionMethods\IFilesSystemExtensions.cs" />
-    <Compile Include="ExtensionMethods\IPackageExtensions.cs" />
     <Compile Include="ExtensionMethods\IPackageManagerExtensions.cs" />
     <Compile Include="ExtensionMethods\IPackageRepositoryExtensions.cs" />
     <Compile Include="ExtensionMethods\IEnumerableStringExtensions.cs" />
