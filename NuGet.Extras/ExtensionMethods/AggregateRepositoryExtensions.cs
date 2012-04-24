@@ -28,6 +28,20 @@ namespace NuGet.Extras.ExtensionMethods
         }
 
         /// <summary>
+        /// Returns a an AggregateRepository minus any DataServicePackageRepositories.  Useful if you want to use a command that will not work across these types.
+        /// Snappy name, I know.
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <returns></returns>
+        public static AggregateRepository GetLocalOnlyAggregateRepository(this AggregateRepository repository)
+        {
+            //Craziness as the MachineCache and LocalPackageRepository do not support IsLatestVersion
+            var repoList = Flatten(repository.Repositories);
+            //TODO this is not all the remotes that could be used...but it is the most common.
+            return new AggregateRepository(repoList.Where(r => !(r is DataServicePackageRepository)));
+        }
+
+        /// <summary>
         /// Returns a an AggregateRepository minus any LocalPackageRepositories or MachineCache repositories.  Useful if you want to use a command that will not work across these types.
         /// Snappy name, I know.
         /// </summary>
@@ -36,8 +50,9 @@ namespace NuGet.Extras.ExtensionMethods
         public static AggregateRepository GetRemoteOnlyAggregateRepository(this AggregateRepository repository)
         {
             //Craziness as the MachineCache and LocalPackageRepository do not support IsLatestVersion
-            var excluded = new List<Type> {typeof (LocalPackageRepository), typeof (MachineCache)};
-            return new AggregateRepository(repository.Repositories.Where(r => !excluded.Contains(r.GetType())));
+            var repoList = Flatten(repository.Repositories);
+            var excluded = new List<Type> { typeof(LocalPackageRepository), typeof(MachineCache) };
+            return new AggregateRepository(repoList.Where(r => !excluded.Contains(r.GetType())));
         }
 
         /// <summary>
@@ -59,5 +74,20 @@ namespace NuGet.Extras.ExtensionMethods
 
             return remoteOnlyAggregateRepository.FindPackagesById(packageId).Where(p => versionSpec.Satisfies(p.Version)).OrderByDescending(p => p.Version).FirstOrDefault();
         }
+
+        //HACK Stolen from NuGet.AggregateRepository.
+        internal static IEnumerable<IPackageRepository> Flatten(IEnumerable<IPackageRepository> repositories)
+        {
+            return repositories.SelectMany(repository =>
+            {
+                var aggrgeateRepository = repository as AggregateRepository;
+                if (aggrgeateRepository != null)
+                {
+                    return aggrgeateRepository.Repositories.ToArray();
+                }
+                return new[] { repository };
+            });
+        }
+
     }
 }

@@ -25,8 +25,12 @@ namespace NuGet.Extras.Tests.Extensions
 
             var ar = new AggregateRepository(new List<IPackageRepository>() {mc, l, r1, r2});
             Assert.AreEqual(2, ar.GetRemoteOnlyAggregateRepository().Repositories.Count());
+            Assert.AreEqual(2, ar.GetLocalOnlyAggregateRepository().Repositories.Count());
             Assert.AreEqual(typeof(DataServicePackageRepository), ar.GetRemoteOnlyAggregateRepository().Repositories.ToArray()[0].GetType());
             Assert.AreEqual(typeof(DataServicePackageRepository), ar.GetRemoteOnlyAggregateRepository().Repositories.ToArray()[1].GetType());
+            Assert.AreEqual(typeof(MachineCache), ar.GetLocalOnlyAggregateRepository().Repositories.ToArray()[0].GetType());
+            Assert.AreEqual(typeof(LocalPackageRepository), ar.GetLocalOnlyAggregateRepository().Repositories.ToArray()[1].GetType());
+            
         }
 
     }
