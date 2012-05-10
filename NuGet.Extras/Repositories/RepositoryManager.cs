@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace NuGet.Extras.Repositories
 {
+    /// <summary>
+    /// Implements IRepositoryManager
+    /// </summary>
     public class RepositoryManager : IRepositoryManager
     {
         /// <summary>
@@ -26,6 +29,7 @@ namespace NuGet.Extras.Repositories
         /// </summary>
         /// <param name="repositoryConfig">The repository.config file to parse.</param>
         /// <param name="repositoryEnumerator">The repository enumerator.</param>
+        /// <param name="fileSystem"> </param>
         /// <example>Can be a direct path to a repository.config file</example>
         ///   
         /// <example>Can be a path to a directory, which will recursively locate all contained repository.config files</example>

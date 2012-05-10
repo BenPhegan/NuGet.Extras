@@ -2,13 +2,28 @@
 
 namespace NuGet.Extras.ExtensionMethods
 {
+    /// <summary>
+    /// Provides extension methods on IVersionSpec
+    /// </summary>
     public static class IVersionExtensions
     {
+        /// <summary>
+        /// Stolen from NuGet codebase.
+        /// </summary>
+        /// <param name="versionInfo"></param>
+        /// <returns></returns>
         public static Func<IPackage, bool> ToDelegate(this IVersionSpec versionInfo)
         {
             return versionInfo.ToDelegate<IPackage>(p => p.Version);
         }
 
+        /// <summary>
+        /// Stolen from NuGet codebase.
+        /// </summary>
+        /// <param name="versionInfo"></param>
+        /// <param name="extractor"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static Func<T, bool> ToDelegate<T>(this IVersionSpec versionInfo, Func<T, SemanticVersion> extractor)
         {
             return p =>

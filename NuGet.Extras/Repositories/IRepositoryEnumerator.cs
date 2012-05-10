@@ -3,6 +3,9 @@ using System.IO;
 
 namespace NuGet.Extras.Repositories
 {
+    /// <summary>
+    /// Allows enumeration of PackageReferenceFiles across a repository.
+    /// </summary>
     public interface IRepositoryEnumerator
     {
         /// <summary>

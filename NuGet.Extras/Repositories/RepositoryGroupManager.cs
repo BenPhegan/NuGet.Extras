@@ -9,8 +9,14 @@ using NuGet.Extras.ExtensionMethods;
 
 namespace NuGet.Extras.Repositories
 {
+    /// <summary>
+    /// Provides functionality across multiple repositories.
+    /// </summary>
     public class RepositoryGroupManager
     {
+        /// <summary>
+        /// The managed set of RepositoryManagers.
+        /// </summary>
         public IEnumerable<RepositoryManager> RepositoryManagers { get; private set; }
         IFileSystem fileSystem;
 
@@ -18,6 +24,7 @@ namespace NuGet.Extras.Repositories
         /// Initializes a new instance of the <see cref="RepositoryGroupManager"/> class.  Provides nested operations over RepositoryManager instances.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        /// <param name="fileSystem"> </param>
         /// <example>Can be a direct path to a repository.config file</example>
         ///   
         /// <example>Can be a path to a directory, which will recursively locate all contained repository.config files</example>

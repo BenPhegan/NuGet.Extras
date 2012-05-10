@@ -6,9 +6,16 @@ using NuGet.Extras.BaseClasses;
 
 namespace NuGet.Extras.Commands
 {
+    /// <summary>
+    /// Provides base functionality for commands that handle two repositories.
+    /// </summary>
     public abstract class TwoWayCommand : Command
     {
         private readonly IList<string> _packageList;
+
+        /// <summary>
+        /// The working directory.
+        /// </summary>
         protected string WorkDirectory;
         private IPackageSourceProvider _destinationProvider;
 

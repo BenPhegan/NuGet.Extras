@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NuGet.Extras.ExtensionMethods
 {
+    /// <summary>
+    /// Provides a set of extension methods that extend the AggregateRepository.
+    /// </summary>
     public static class AggregateRepositoryExtensions
     {
 

@@ -56,11 +56,14 @@
       <DependentUpon>TwoWayResources.resx</DependentUpon>
     </Compile>
     <Compile Include="BlankUserSettings.cs" />
+    <Compile Include="Caches\INuGetCacheManager.cs" />
+    <Compile Include="Caches\IPackageCache.cs" />
+    <Compile Include="Caches\MemoryBasedPackageCache.cs" />
+    <Compile Include="Caches\NuGetCacheManager.cs" />
     <Compile Include="Comparers\PackageReferenceEqualityComparer.cs" />
     <Compile Include="ExtensionMethods\AggregateRepositoryExtensions.cs" />
     <Compile Include="ExtensionMethods\IFilesSystemExtensions.cs" />
     <Compile Include="ExtensionMethods\IPackageManagerExtensions.cs" />
-    <Compile Include="ExtensionMethods\IPackageRepositoryExtensions.cs" />
     <Compile Include="ExtensionMethods\IEnumerableStringExtensions.cs" />
     <Compile Include="Comparers\LambdaComparer.cs" />
     <Compile Include="ExtensionMethods\IVersionSpecExtensions.cs" />
@@ -69,8 +72,10 @@
     <Compile Include="PackageReferences\IPackageReferenceSetResolver.cs" />
     <Compile Include="PackageReferences\PackageReferenceSetResolver.cs" />
     <Compile Include="Packages\IPackageEnumerator.cs" />
+    <Compile Include="Packages\IPackageResolutionManager.cs" />
     <Compile Include="Packages\PackageAggregator.cs" />
     <Compile Include="Packages\PackageEnumerator.cs" />
+    <Compile Include="Packages\PackageResolutionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Comparers\VersionSpecEqualityComparer.cs" />
     <Compile Include="Repositories\IRepositoryEnumerator.cs" />

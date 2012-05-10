@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 namespace NuGet.Extras.PackageReferences
 {
+    /// <summary>
+    /// Provides the ability to resolve a set of packages that will meet a set of common constraints.
+    /// </summary>
     public interface IPackageReferenceSetResolver
     {
         /// <summary>

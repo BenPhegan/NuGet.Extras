@@ -20,6 +20,13 @@ namespace NuGet.Extras.Comparers
             _me = me ?? new VersionSpec();
         }
 
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IVersionSpec other)
         {
             //If we get passed a null, assume that it is a default/new VersionSpec
@@ -37,6 +44,13 @@ namespace NuGet.Extras.Comparers
             return _me.IsMaxInclusive == other.IsMaxInclusive && _me.IsMinInclusive == other.IsMinInclusive && minVersionsAreEqual && maxVersionsAreEqual;
         }
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             int returnHash = 0;

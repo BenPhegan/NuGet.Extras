@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace NuGet.Extras.ExtensionMethods
 {
+    /// <summary>
+    /// IFileSystem extensions.
+    /// </summary>
     public static class IFileSystemExtensions
     {
         /// <summary>
@@ -37,6 +40,11 @@ namespace NuGet.Extras.ExtensionMethods
             return files.Distinct();
         }
 
+        /// <summary>
+        /// Gets directories under a specified path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static IEnumerable<string> GetDirectories(string path)
         {
             foreach (var index in IndexOfAll(path, Path.DirectorySeparatorChar))

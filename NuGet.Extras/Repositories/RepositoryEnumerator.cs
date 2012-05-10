@@ -5,10 +5,17 @@ using System.Xml.Linq;
 
 namespace NuGet.Extras.Repositories
 {
+    /// <summary>
+    /// Implements IRepositoryEnumerator
+    /// </summary>
     public class RepositoryEnumerator : IRepositoryEnumerator
     {
         IFileSystem fileSystem;
 
+        /// <summary>
+        /// Creates a RepositoryEnumerator.
+        /// </summary>
+        /// <param name="fileSystem"></param>
         public RepositoryEnumerator(IFileSystem fileSystem)
         {
             Contract.Requires(fileSystem != null);
