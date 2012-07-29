@@ -25,9 +25,7 @@ namespace NuGet.Extras.ExtensionMethods
                 throw new ArgumentNullException("packageId");
             }
 
-            var remoteOnlyAggregateRepository = repository.GetRemoteOnlyAggregateRepository();
-    
-            return remoteOnlyAggregateRepository.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Where(p => p.IsLatestVersion).FirstOrDefault();
+            return repository.FindPackagesById(packageId).OrderByDescending(p => p.Version).Where(p => p.IsLatestVersion).FirstOrDefault();
         }
 
         /// <summary>
