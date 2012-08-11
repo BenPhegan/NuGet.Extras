@@ -25,9 +25,19 @@ namespace NuGet.Extras.ExtensionMethods
                 throw new ArgumentNullException("packageId");
             }
 
-            var remoteOnlyAggregateRepository = repository.GetRemoteOnlyAggregateRepository();
-    
-            return remoteOnlyAggregateRepository.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase)).Where(p => p.IsLatestVersion).FirstOrDefault();
+            var localRepo = repository.GetLocalOnlyAggregateRepository();
+            IPackage localPackage = null;
+            if (localRepo != null)
+                localPackage = localRepo.FindPackagesById(packageId).OrderByDescending(p => p.Version).Where(p => p.IsLatestVersion).FirstOrDefault();
+
+            var remoteRepo = repository.GetRemoteOnlyAggregateRepository();
+            IPackage remotePackage = null;
+            if (remoteRepo != null)
+                remotePackage = remoteRepo.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase) && p.IsLatestVersion).FirstOrDefault();
+
+            if (localPackage != null && remotePackage != null)
+                return localPackage.Version >= remotePackage.Version ? localPackage : remotePackage;
+            return localPackage ?? remotePackage;
         }
 
         /// <summary>
@@ -41,7 +51,7 @@ namespace NuGet.Extras.ExtensionMethods
             //Craziness as the MachineCache and LocalPackageRepository do not support IsLatestVersion
             var repoList = Flatten(repository.Repositories);
             //TODO this is not all the remotes that could be used...but it is the most common.
-            return new AggregateRepository(repoList.Where(r => !(r is DataServicePackageRepository)));
+            return new AggregateRepository(repoList.Where(r => !(r is DataServicePackageRepository) && !(r is MachineCache)));
         }
 
         /// <summary>
@@ -54,8 +64,7 @@ namespace NuGet.Extras.ExtensionMethods
         {
             //Craziness as the MachineCache and LocalPackageRepository do not support IsLatestVersion
             var repoList = Flatten(repository.Repositories);
-            var excluded = new List<Type> { typeof(LocalPackageRepository), typeof(MachineCache) };
-            return new AggregateRepository(repoList.Where(r => !excluded.Contains(r.GetType())));
+            return new AggregateRepository(repoList.Where(r => r is DataServicePackageRepository));
         }
 
         /// <summary>
