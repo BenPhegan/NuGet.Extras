@@ -51,7 +51,7 @@ namespace NuGet.Extras.ExtensionMethods
             //Craziness as the MachineCache and LocalPackageRepository do not support IsLatestVersion
             var repoList = Flatten(repository.Repositories);
             //TODO this is not all the remotes that could be used...but it is the most common.
-            return new AggregateRepository(repoList.Where(r => !(r is DataServicePackageRepository) && !(r is MachineCache)));
+            return new AggregateRepository(repoList.Where(r => r.GetType() != typeof(DataServicePackageRepository) && r.GetType() != typeof(MachineCache)));
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace NuGet.Extras.ExtensionMethods
         {
             //Craziness as the MachineCache and LocalPackageRepository do not support IsLatestVersion
             var repoList = Flatten(repository.Repositories);
-            return new AggregateRepository(repoList.Where(r => r is DataServicePackageRepository));
+            return new AggregateRepository(repoList.Where(r => r.GetType() != typeof(LocalPackageRepository) && r.GetType() != typeof(MachineCache)));
         }
 
         /// <summary>
