@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using NuGet.Extras.ExtensionMethods;
 
 namespace NuGet.Extras.PackageReferences
@@ -141,7 +142,7 @@ namespace NuGet.Extras.PackageReferences
                 //If we get no failures, set the ResolvedVersionSpec, otherwise it stays at null
                 if (failures.Count == 0)
                 {
-                    var pr = new PackageReference(id, winner, smallest);
+                    var pr = new PackageReference(id, winner, smallest, new FrameworkName(".NET Framework, Version=4.0"));
                     return pr;
                 }
             }

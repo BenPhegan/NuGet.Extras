@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using NUnit.Framework;
 using Moq;
 using NuGet.Extras.Caches;
@@ -50,7 +51,7 @@ namespace NuGet.Extras.Tests.Packages
             //Repository does not have these versions, so any call to it will fail...
             var resolver = new PackageResolutionManager(console, isLatest, cache);
             var remoteRepository = Utilities.GetFactory().CreateRepository("SingleAggregate");
-            var result = resolver.ResolveLatestInstallablePackage(remoteRepository, new PackageReference(id, SemanticVersion.Parse(version), versionSpec));
+            var result = resolver.ResolveLatestInstallablePackage(remoteRepository, new PackageReference(id, SemanticVersion.Parse(version), versionSpec, new FrameworkName(".NET Framework, Version=4.0")));
             
             //Null result when we call ResolveLastestInstallablePackage when PackageResolutionManager not using Latest
             return result == null ? "" : result.Version.ToString();
@@ -100,7 +101,7 @@ namespace NuGet.Extras.Tests.Packages
             var resolver = new PackageResolutionManager(console, true, new MemoryBasedPackageCache(console));
             var remoteRepository = Utilities.GetFactory().CreateRepository("SingleAggregate");
 
-            var packageReference = new PackageReference("Assembly.Common", SemanticVersion.Parse("1.0"), new VersionSpec());
+            var packageReference = new PackageReference("Assembly.Common", SemanticVersion.Parse("1.0"), new VersionSpec(), new FrameworkName(".NET Framework, Version=4.0"));
 
             var test = resolver.ResolveLatestInstallablePackage(remoteRepository, packageReference);
             Assert.AreEqual("Assembly.Common", test.Id);

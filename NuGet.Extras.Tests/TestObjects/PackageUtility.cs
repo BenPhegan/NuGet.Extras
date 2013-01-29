@@ -65,13 +65,23 @@ namespace NuGet.Extras.Tests.TestObjects
             mockPackage.Setup(m => m.Version).Returns(new SemanticVersion(version));
             mockPackage.Setup(m => m.GetFiles()).Returns(allFiles);
             mockPackage.Setup(m => m.AssemblyReferences).Returns(assemblyReferences);
-            mockPackage.Setup(m => m.Dependencies).Returns(dependencies);
+            mockPackage.Setup(m => m.DependencySets).Returns(CreateDependencySets(dependencies));
             mockPackage.Setup(m => m.Description).Returns(description);
             mockPackage.Setup(m => m.Language).Returns("en-US");
             mockPackage.Setup(m => m.Authors).Returns(new[] { "Tester" });
             mockPackage.Setup(m => m.GetStream()).Returns(() => new MemoryStream());
             mockPackage.Setup(m => m.LicenseUrl).Returns(new Uri("ftp://test/somelicense.txts"));
             return mockPackage.Object;
+        }
+
+        private static IEnumerable<PackageDependencySet> CreateDependencySets(IEnumerable<PackageDependency> dependencies)
+        {
+            var sets = new List<PackageDependencySet>
+                {
+                    new PackageDependencySet(new FrameworkName(".NET Framework, Version=4.0"), dependencies)
+                };
+            return sets;
+
         }
 
         private static List<IPackageAssemblyReference> CreateAssemblyReferences(IEnumerable<string> fileNames)

@@ -24,6 +24,11 @@ namespace NuGet.Extras.Tests.TestObjects
             Deleted = new HashSet<string>();
         }
 
+        public DateTimeOffset GetLastAccessed(string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual ILogger Logger
         {
             get
@@ -69,6 +74,40 @@ namespace NuGet.Extras.Tests.TestObjects
                 }
             }
             Deleted.Add(path);
+        }
+
+        public virtual IEnumerable<string> GetFiles(string path, bool recursive)
+        {
+            var files = Paths.Select(f => f.Key);
+            if (recursive)
+            {
+                path = PathUtility.EnsureTrailingSlash(path);
+                files = files.Where(f => f.StartsWith(path, StringComparison.OrdinalIgnoreCase));
+            }
+            else
+            {
+                files = files.Where(f => Path.GetDirectoryName(f).Equals(path, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return files;
+        }
+
+        public virtual IEnumerable<string> GetFiles(string path, string filter, bool recursive)
+        {
+            if (String.IsNullOrEmpty(filter) || filter == "*.*")
+            {
+                filter = "*";
+            }
+
+            // TODO: This is just flaky. We need to make it closer to the implementation that Directory.Enumerate supports perhaps by using PathResolver.
+            var files = GetFiles(path, recursive);
+            if (!filter.Contains("*"))
+            {
+                return files.Where(f => f.Equals(Path.Combine(path, filter), StringComparison.OrdinalIgnoreCase));
+            }
+
+            Regex matcher = GetFilterRegex(filter);
+            return files.Where(f => matcher.IsMatch(f));
         }
 
         public virtual string GetFullPath(string path)

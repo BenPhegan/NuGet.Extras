@@ -39,6 +39,11 @@ namespace NuGet.Extras
             return null;
         }
 
+        public string GetValue(string section, string key, bool isPath)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Seriously, more comments than sense.
         /// </summary>
