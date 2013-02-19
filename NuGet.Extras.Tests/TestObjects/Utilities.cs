@@ -31,6 +31,11 @@ namespace NuGet.Extras.Tests.TestObjects
                                       PackageUtility.CreatePackage("Assembly.Data", "1.2"),
                                       PackageUtility.CreatePackage("Assembly.Data", "2.0"),
                                       PackageUtility.CreatePackage("Assembly.Data", "2.1", isLatest: true),
+                                      PackageUtility.CreatePackage("Assembly.Instrumentation"),
+                                      PackageUtility.CreatePackage("Assembly.Instrumentation", "1.1"),
+                                      PackageUtility.CreatePackage("Assembly.Instrumentation", "1.2"),
+                                      PackageUtility.CreatePackage("Assembly.Instrumentation", "2.0"),
+                                      PackageUtility.CreatePackage("Assembly.Instrumentation", "2.1", isLatest: true),
                                   };
 
             var factory = new Mock<IPackageRepositoryFactory>();

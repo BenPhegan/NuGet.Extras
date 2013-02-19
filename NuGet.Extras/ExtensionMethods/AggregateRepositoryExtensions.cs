@@ -33,7 +33,7 @@ namespace NuGet.Extras.ExtensionMethods
             var remoteRepo = repository.GetRemoteOnlyAggregateRepository();
             IPackage remotePackage = null;
             if (remoteRepo != null)
-                remotePackage = remoteRepo.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase) && p.IsLatestVersion).FirstOrDefault();
+                remotePackage = remoteRepo.FindPackagesById(packageId).OrderByDescending(p => p.Version).Where(p => p.IsLatestVersion).FirstOrDefault();
 
             if (localPackage != null && remotePackage != null)
                 return localPackage.Version >= remotePackage.Version ? localPackage : remotePackage;

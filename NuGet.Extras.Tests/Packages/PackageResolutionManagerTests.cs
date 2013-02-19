@@ -56,6 +56,28 @@ namespace NuGet.Extras.Tests.Packages
             return result == null ? "" : result.Version.ToString();
         }
 
+        [TestCase("Assembly.Instrumentation", "1.4", null, true, Result = "2.1")]
+        [TestCase("Assembly.Common", "1.4", null, true, Result = "2.1")]
+        [TestCase("Assembly.Common", "2.9", "[1.0,1.3)", true, Result = "1.2")]
+        [TestCase("Assembly.Common", "2.9", "[1.0,1.3]", true, Result = "1.3")]
+        [TestCase("Assembly.Common", "1.3", null, false, Result = "")]
+        public string ResolvesUsingMultipleRepos(string id, string version, string spec, bool isLatest)
+        {
+            var versionSpec = spec == null ? null : VersionUtility.ParseVersionSpec(spec);
+
+            //Add to appropriate cache we want to test based on whether we have a versionspec or not.
+            var console = new Mock<ILogger>().Object;
+            var cache = new MemoryBasedPackageCache(console);
+
+            //Repository does not have these versions, so any call to it will fail...
+            var resolver = new PackageResolutionManager(console, isLatest, cache);
+            var remoteRepository = Utilities.GetFactory().CreateRepository("MultiAggregate");
+            var result = resolver.ResolveLatestInstallablePackage(remoteRepository, new PackageReference(id, SemanticVersion.Parse(version), versionSpec));
+
+            //Null result when we call ResolveLastestInstallablePackage when PackageResolutionManager not using Latest
+            return result == null ? "" : result.Version.ToString();
+        }
+
         [Test]
         [Ignore("Need to sort out a set of tests here....")]
         public void WillNotUseODataIfPackageLocal()
