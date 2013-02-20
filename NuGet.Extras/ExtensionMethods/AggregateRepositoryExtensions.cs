@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NuGet.Extras.ExtensionMethods
 {
@@ -33,7 +34,12 @@ namespace NuGet.Extras.ExtensionMethods
             var remoteRepo = repository.GetRemoteOnlyAggregateRepository();
             IPackage remotePackage = null;
             if (remoteRepo != null)
-                remotePackage = remoteRepo.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase) && p.IsLatestVersion).FirstOrDefault();
+            {
+                //Copying logic from AggregateRepository, but refining the search
+                Func<IPackageRepository, IPackage> findLatestPackage = Wrap(r => r.GetPackages().Where(p => p.Id.Equals(packageId, StringComparison.OrdinalIgnoreCase) && p.IsLatestVersion).FirstOrDefault());
+                var repo = remoteRepo.Repositories.Select(findLatestPackage);
+                remotePackage = repo.Where(p => p != null).OrderByDescending(p => p.Version).FirstOrDefault();
+            }
 
             if (localPackage != null && remotePackage != null)
                 return localPackage.Version >= remotePackage.Version ? localPackage : remotePackage;
@@ -101,5 +107,21 @@ namespace NuGet.Extras.ExtensionMethods
             });
         }
 
+        //HACK Stolen from NuGet.AggregateRepository.
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "We want to suppress any exception that we may encounter.")]
+        private static Func<IPackageRepository, T> Wrap<T>(Func<IPackageRepository, T> factory, T defaultValue = default(T))
+        {
+            return repository =>
+            {
+                try
+                {
+                    return factory(repository);
+                }
+                catch (Exception ex)
+                {
+                    return defaultValue;
+                }
+            };
+        }
     }
 }
